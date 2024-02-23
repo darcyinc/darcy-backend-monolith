@@ -1,6 +1,6 @@
-import fastify from 'fastify';
-import cookie from '@fastify/cookie';
 import { db } from '@/helpers/db';
+import cookie from '@fastify/cookie';
+import fastify from 'fastify';
 
 // in development, DATABASE_URL is not set
 if (!process.env.DATABASE_URL) {
