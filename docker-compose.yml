@@ -1,0 +1,65 @@
+services:
+  api01: &api01
+    container_name: darcy-api01
+    image: davipatricio/darcy-backend
+    hostname: api01
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgres://darcy:darcy@db/darcy
+      - JWT_SECRET=mysecret
+    ports:
+      - 3000
+
+  api02: &api02
+    <<: *api01
+    container_name: darcy-api02
+    hostname: api02
+    depends_on:
+      - api01
+    ports:
+      - 3000
+
+  proxy:
+    image: nginx:latest
+    container_name: darcy-nginx
+    restart: unless-stopped
+    volumes:
+      - ./services/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - api01
+      - api02
+    ports:
+      - '80:80'
+
+  db:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.postgresql
+    container_name: darcy-postgres
+    restart: unless-stopped
+    hostname: db
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: "darcy"
+      POSTGRES_PASSWORD: "darcy"
+      POSTGRES_DB: "darcy"
+    volumes:
+      - darcy-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d darcy -U darcy" ]
+      interval: 2s
+      timeout: 5s
+      retries: 5
+
+networks:
+  default:
+    name: darcy
+    driver: bridge
+
+volumes:
+  darcy-postgres-data:
+    name: darcy-postgres-data

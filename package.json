@@ -1,0 +1,35 @@
+{
+  "name": "darcy-backend",
+  "private": true,
+  "version": "0.0.1",
+  "description": "The Darcy Social Network.",
+  "author": "Davi Patricio <davipatricio@protonmail.com>",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch --onSuccess \"pnpm prod\"",
+    "prod": "node --env-file=.env dist/index.js",
+    "prod:docker": "node dist/index.js",
+    "lint": "biome check src",
+    "format": "pnpm run lint --apply",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "@fastify/cookie": "^9.3.1",
+    "@prisma/client": "^5.10.2",
+    "fastify": "^4.26.1",
+    "husky": "^9.0.11",
+    "is-ci": "^3.0.1",
+    "jsonwebtoken": "^9.0.2",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.5.3",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/node": "^20.11.20",
+    "prisma": "^5.10.2",
+    "tsup": "^8.0.2",
+    "typescript": "^5.3.3"
+  }
+}
