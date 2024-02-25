@@ -1,16 +1,61 @@
-import { verifyToken } from '@/helpers/jwt';
-import { FastifyReply, FastifyRequest } from 'fastify';
+import { decodeToken } from '@/helpers/jwt';
+import { FastifyRequest } from 'fastify';
 
-export default async function requireAuthorization(request: FastifyRequest, reply: FastifyReply) {
+interface UnauthorizedResponse {
+  authorized: false;
+  response: Response;
+}
+
+interface AuthorizedResponse {
+  authorized: true;
+  email: string;
+}
+
+type AuthorizationResponse = AuthorizedResponse | UnauthorizedResponse;
+
+export default async function requireAuthorization(request: FastifyRequest): Promise<AuthorizationResponse> {
   const encodedToken = request.cookies.darcy_token;
 
   if (!encodedToken) {
-    return reply.status(401).send({ error: 'Unauthorized' });
+    return {
+      authorized: false,
+      response: new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+    };
   }
 
-  const validToken = await verifyToken(encodedToken);
+  try {
+    const validToken = await decodeToken(encodedToken);
 
-  if (!validToken) {
-    return reply.status(401).send({ error: 'Unauthorized' });
+    if (!validToken || !validToken.email || !validToken.updatedAt) {
+      return {
+        authorized: false,
+        response: new Response(JSON.stringify({ error: 'Unauthorized' }), {
+          status: 401,
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+      };
+    }
+
+    return {
+      authorized: true,
+      email: validToken.email
+    };
+  } catch {
+    return {
+      authorized: false,
+      response: new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+    };
   }
 }
