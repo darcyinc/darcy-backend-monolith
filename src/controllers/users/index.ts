@@ -1,3 +1,4 @@
+import { PatchUserDto } from '@/dtos/user';
 import { db } from '@/helpers/db';
 import requireAuthorization from '@/middlewares/authorization';
 import { getUserByEmail, getUserByHandle } from '@/services/users';
@@ -56,4 +57,66 @@ export const get = async (req: FastifyRequest<{ Params: { handle: string } }>, r
     followingIds: undefined,
     id: undefined
   });
+};
+
+export const patch = async (
+  req: FastifyRequest<{ Params: { handle: string }; Body: { displayName?: string; handle?: string; bio?: string } }>,
+  reply: FastifyReply
+) => {
+  // Only allow updating the @me user
+  if (req.params.handle !== '@me') {
+    return new Response(
+      JSON.stringify({
+        error: 'update_user_with_at_handle',
+        message: 'To update a user, you must use the @me handle'
+      }),
+      {
+        status: 401
+      }
+    );
+  }
+
+  const data = req.body;
+  const parsedData = await PatchUserDto.safeParseAsync(data);
+
+  if (!parsedData.success) {
+    return reply.status(400).send({
+      error: parsedData.error.errors[0].message
+    });
+  }
+
+  const authData = await requireAuthorization(req);
+  if (!authData.authorized) return authData.response;
+
+  const user = await getUserByEmail(authData.email);
+  if (!user) return reply.status(404).send({ error: 'user_not_found', message: 'User not found.' });
+
+  if (parsedData.data.handle) {
+    const handleExists = await getUserByHandle(parsedData.data.handle);
+    if (handleExists && handleExists.id !== user.id) {
+      return reply.status(409).send({ error: 'handle_already_user', message: 'Handle is being used by another user.' });
+    }
+  }
+
+  const [newUser, followersCount] = await Promise.all([
+    db.user.update({
+      where: { id: user.id },
+      data: {
+        displayName: data.displayName || user.displayName,
+        handle: data.handle || user.handle,
+        bio: data.bio || user.bio
+      }
+    }),
+    db.user.count({
+      where: {
+        followingIds: {
+          has: user.id
+        }
+      }
+    })
+  ]);
+
+  return new Response(
+    JSON.stringify({ ...newUser, followersCount, followingCount: user.followingIds.length, followingIds: undefined, id: undefined })
+  );
 };
