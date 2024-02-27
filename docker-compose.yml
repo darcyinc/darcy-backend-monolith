@@ -22,6 +22,16 @@ services:
     ports:
       - 3000
 
+  web01:
+    container_name: web01
+    hostname: web01
+    image: davipatricio/darcy-frontend
+    restart: unless-stopped
+    depends_on:
+      - api01
+    ports:
+      - 3000
+
   proxy:
     image: nginx:latest
     container_name: darcy-nginx
@@ -31,8 +41,10 @@ services:
     depends_on:
       - api01
       - api02
+      # - web01
     ports:
       - '80:80'
+      - '81:81'
 
   db:
     build:
