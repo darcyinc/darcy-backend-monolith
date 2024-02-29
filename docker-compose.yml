@@ -11,7 +11,15 @@ services:
         condition: service_healthy
     environment:
       - DATABASE_URL=postgres://darcy:darcy@db/darcy
+      - WEBSITE_URL=http://localhost:81
       - JWT_SECRET=mysecret
+      # Oauth
+      - DISCORD_CLIENT_SECRET=
+      - DISCORD_CLIENT_ID=
+      - GITHUB_CLIENT_SECRET=
+      - GITHUB_CLIENT_ID=
+      - GOOGLE_CLIENT_SECRET=
+      - GOOGLE_CLIENT_ID=
     ports:
       - 3000
 

@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@fastify/cookie": "^9.3.1",
+    "@fastify/cors": "^9.0.1",
     "@prisma/client": "^5.10.2",
     "fastify": "^4.26.1",
     "husky": "^9.0.11",
