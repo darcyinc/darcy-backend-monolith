@@ -1,10 +1,10 @@
-import { PatchUserDto } from '@/dtos/user';
+import { PatchUserDto } from '@/dtos/users';
 import { db } from '@/helpers/db';
 import requireAuthorization from '@/middlewares/authorization';
 import { getUserByEmail, getUserByHandle } from '@/services/users';
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-export const get = async (req: FastifyRequest<{ Params: { handle: string } }>, reply: FastifyReply) => {
+export const GET = async (req: FastifyRequest<{ Params: { handle: string } }>, reply: FastifyReply) => {
   const authData = await requireAuthorization(req);
 
   if (req.params.handle === '@me') {
@@ -59,7 +59,7 @@ export const get = async (req: FastifyRequest<{ Params: { handle: string } }>, r
   });
 };
 
-export const patch = async (
+export const PATCH = async (
   req: FastifyRequest<{ Params: { handle: string }; Body: { displayName?: string; handle?: string; bio?: string } }>,
   reply: FastifyReply
 ) => {
