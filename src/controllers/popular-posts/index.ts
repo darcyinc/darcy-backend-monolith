@@ -4,12 +4,12 @@ import requireAuthorization from '@/middlewares/authorization';
 import { User } from '@prisma/client';
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-export const GET = async (req: FastifyRequest<{ Querystring: { page: number; limit: number } }>, reply: FastifyReply) => {
+export const GET = async (req: FastifyRequest<{ Querystring: { page: string; limit: string } }>, reply: FastifyReply) => {
   const { page, limit } = req.query;
 
   const [validatedPage, validatedLimit] = await Promise.all([
-    FollowingPageDto.safeParseAsync(page),
-    FollowingLimitDto.safeParseAsync(limit)
+    FollowingPageDto.safeParseAsync(Number(page)),
+    FollowingLimitDto.safeParseAsync(Number(limit))
   ]);
 
   if (!validatedPage.success) {
@@ -41,8 +41,8 @@ export const GET = async (req: FastifyRequest<{ Querystring: { page: number; lim
         }
       }
     },
-    take: limit,
-    skip: (page - 1) * limit
+    take: validatedLimit.data,
+    skip: (validatedPage.data - 1) * validatedLimit.data
   });
 
   const authData = await requireAuthorization(req);
