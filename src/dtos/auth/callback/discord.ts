@@ -1,10 +1,4 @@
-import { z } from 'zod';
-
-export const AuthCallbackDto = z.object({
-  code: z.string().min(1)
-});
-
-export interface DiscordTokenResponse {
+export interface DiscordTokenDto {
   access_token: string;
   token_type: string;
   scope: string;
@@ -12,7 +6,7 @@ export interface DiscordTokenResponse {
   error?: string;
 }
 
-export interface DiscordUserData {
+export interface DiscordUserDto {
   id: string;
   username: string;
   discriminator: string;

@@ -1,4 +1,4 @@
-import { DiscordTokenResponse, DiscordUserData } from '@/dtos/auth/callback';
+import { DiscordTokenDto, DiscordUserDto } from '@/dtos/auth/callback/discord';
 import { env } from '@/validations/env';
 
 export const DISCORD_CALLBACK_URL = `${env.WEBSITE_URL}/auth/callback/discord`;
@@ -20,7 +20,7 @@ export const getDiscordToken = async (code: string) => {
     },
     body: generateAuthParams(code)
   });
-  const data = (await request.json()) as DiscordTokenResponse;
+  const data = (await request.json()) as DiscordTokenDto;
 
   if (data.error || !data.scope.includes('identify') || !data.scope.includes('email')) {
     throw new Error('Invalid scope or an error ocurred.');
@@ -35,7 +35,7 @@ export const getDiscordUserData = async (token: string) => {
       Authorization: `Bearer ${token}`
     }
   });
-  const data = (await request.json()) as DiscordUserData;
+  const data = (await request.json()) as DiscordUserDto;
 
   return data;
 };
