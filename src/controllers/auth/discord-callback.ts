@@ -53,11 +53,9 @@ export const POST = async (req: FastifyRequest<{ Body: { code: string } }>, repl
       token = await signToken({ email: newUser.auth.email, updatedAt: newUser.auth.updatedAt.getTime() });
     }
 
-    reply.setCookie('darcy_token', token, {
-      httpOnly: true
+    reply.send({
+      token
     });
-
-    reply.send();
   } catch {
     reply.status(400).send({
       error: 'invalid_token',
