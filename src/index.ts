@@ -1,11 +1,9 @@
-import cookie from '@fastify/cookie';
 import cors from '@fastify/cors';
 import fastify from 'fastify';
 import { registerRoutes } from './helpers/registerRoutes';
 
 const app = fastify();
 
-app.register(cookie);
 app.register(cors, { origin: 'http://localhost:3001' });
 registerRoutes(app);
 
