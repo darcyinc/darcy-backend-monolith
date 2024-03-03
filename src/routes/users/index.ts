@@ -2,7 +2,7 @@ import * as UsersController from '@/controllers/users';
 import * as FollowUsersController from '@/controllers/users/follow';
 import * as FollowersUsersController from '@/controllers/users/followers';
 import * as FollowingUsersController from '@/controllers/users/following';
-import * as PostUsersController from '@/controllers/users/following';
+import * as PostUsersController from '@/controllers/users/posts';
 import { FastifyInstance } from 'fastify';
 
 export default function userRouter(fastify: FastifyInstance, _: unknown, done: () => void) {
