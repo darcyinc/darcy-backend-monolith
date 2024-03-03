@@ -14,9 +14,9 @@ interface AuthorizedResponse {
 type AuthorizationResponse = AuthorizedResponse | UnauthorizedResponse;
 
 export default async function requireAuthorization(request: FastifyRequest): Promise<AuthorizationResponse> {
-  const encodedToken = request.cookies.darcy_token;
+  const [type, encodedToken] = request.headers.authorization?.split(' ') ?? [];
 
-  if (!encodedToken) {
+  if (!type || type !== 'Bearer' || !encodedToken) {
     return {
       authorized: false,
       response: new Response(JSON.stringify({ error: 'Unauthorized' }), {
