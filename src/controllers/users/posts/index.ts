@@ -7,7 +7,7 @@ import { User } from '@prisma/client';
 import { FastifyReply, FastifyRequest } from 'fastify';
 
 export const GET = async (
-  req: FastifyRequest<{ Params: { handle: string }; Querystring: { type: 'posts' | 'replies'; page: string; limit: string } }>,
+  req: FastifyRequest<{ Params: { handle: string }; Querystring: { type: 'posts' | 'replies'; page?: string; limit?: string } }>,
   reply: FastifyReply
 ) => {
   const { params } = req;
@@ -15,8 +15,8 @@ export const GET = async (
   const authData = await requireAuthorization(req);
 
   const [validatedPage, validatedLimit, validatedType] = await Promise.all([
-    FollowingPageDto.safeParseAsync(Number(page)),
-    FollowingLimitDto.safeParseAsync(Number(limit)),
+    FollowingPageDto.safeParseAsync(Number(page ?? 1)),
+    FollowingLimitDto.safeParseAsync(Number(limit ?? 50)),
     GetUserPostsDto.safeParseAsync(type)
   ]);
 
