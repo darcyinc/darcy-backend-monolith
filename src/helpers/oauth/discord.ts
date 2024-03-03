@@ -5,8 +5,8 @@ export const DISCORD_CALLBACK_URL = `${env.WEBSITE_URL}/auth/callback/discord`;
 
 const generateAuthParams = (code: string) =>
   new URLSearchParams({
-    client_id: env.DISCORD_CLIENT_ID ?? '',
-    client_secret: env.DISCORD_CLIENT_SECRET ?? '',
+    client_id: env.DISCORD_CLIENT_ID,
+    client_secret: env.DISCORD_CLIENT_SECRET,
     redirect_uri: DISCORD_CALLBACK_URL,
     grant_type: 'authorization_code',
     code
@@ -23,6 +23,7 @@ export const getDiscordToken = async (code: string) => {
   const data = (await request.json()) as DiscordTokenDto;
 
   if (data.error || !data.scope.includes('identify') || !data.scope.includes('email')) {
+    console.log(data, code);
     throw new Error('Invalid scope or an error ocurred.');
   }
 

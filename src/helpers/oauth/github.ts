@@ -1,11 +1,11 @@
 import { GithubTokenDto, GithubUserDto } from '@/dtos/auth/callback/github';
 import { env } from '@/validations/env';
 
-export const GITHUB_CALLBACK_URL = `${env.WEBSITE_URL}/auth/callback/discord`;
+export const GITHUB_CALLBACK_URL = `${env.WEBSITE_URL}/auth/callback/github`;
 
 const generateAuthParams = (code: string) => ({
-  client_id: env.GITHUB_CLIENT_ID ?? '',
-  client_secret: env.GITHUB_CLIENT_SECRET ?? '',
+  client_id: env.GITHUB_CLIENT_ID,
+  client_secret: env.GITHUB_CLIENT_SECRET,
   redirect_uri: GITHUB_CALLBACK_URL,
   code
 });
