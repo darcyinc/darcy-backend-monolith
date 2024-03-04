@@ -17,7 +17,8 @@ export const GET = async (req: FastifyRequest<{ Params: { postId: string } }>, r
           avatarUrl: true,
           displayName: true,
           handle: true,
-          private: true
+          private: true,
+          verified: true
         }
       }
     }
@@ -41,6 +42,7 @@ export const GET = async (req: FastifyRequest<{ Params: { postId: string } }>, r
 
   return reply.status(200).send({
     ...post,
+    authorId: undefined,
     likedIds: undefined,
     likeCount: post.likedIds.length,
     hasLiked

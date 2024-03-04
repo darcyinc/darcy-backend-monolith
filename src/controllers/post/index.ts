@@ -46,7 +46,8 @@ export const POST = async (req: FastifyRequest<{ Body: z.infer<typeof CreatePost
         select: {
           avatarUrl: true,
           displayName: true,
-          handle: true
+          handle: true,
+          verified: true
         }
       }
     }
