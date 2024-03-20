@@ -19,14 +19,15 @@ enum VerifiedType {
 
 // Define the User schema
 model User {
-  id          String       @id @unique @default(cuid())
-  displayName String
-  handle      String       @unique
-  bio         String       @default("")
-  private     Boolean      @default(false)
-  verified    VerifiedType @default(NONE)
-  avatarUrl   String       @default("/assets/images/default-profile-picture.png")
-  bannerUrl   String?
+  id                  String       @id @unique @default(cuid())
+  displayName         String
+  handle              String       @unique
+  bio                 String       @default("")
+  private             Boolean      @default(false)
+  verified            VerifiedType @default(NONE)
+  completedOnboarding Boolean      @default(false)
+  avatarUrl           String       @default("/assets/images/default-profile-picture.png")
+  bannerUrl           String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

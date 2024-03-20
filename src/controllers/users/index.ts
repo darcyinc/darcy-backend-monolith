@@ -91,6 +91,12 @@ export const PATCH = async (
   const user = await getUserByEmail(authData.email);
   if (!user) return reply.status(404).send({ error: 'user_not_found', message: 'User not found.' });
 
+  if (parsedData.data.completedOnboarding === false) {
+    if (user.completedOnboarding) {
+      return reply.status(409).send({ error: 'onboarding_already_completed', message: 'User has already completed onboarding.' });
+    }
+  }
+
   if (parsedData.data.handle) {
     const handleExists = await getUserByHandle(parsedData.data.handle);
     if (handleExists && handleExists.id !== user.id) {
@@ -104,7 +110,8 @@ export const PATCH = async (
       data: {
         displayName: data.displayName || user.displayName,
         handle: data.handle || user.handle,
-        bio: data.bio || user.bio
+        bio: data.bio || user.bio,
+        completedOnboarding: parsedData.data.onboardingCompleted || user.completedOnboarding
       }
     }),
     db.user.count({

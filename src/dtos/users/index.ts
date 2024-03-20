@@ -9,5 +9,6 @@ export const UserHandleDto = z
 export const PatchUserDto = z.object({
   displayName: z.string().min(1).max(32).optional(),
   bio: z.string().max(120).optional(),
-  handle: UserHandleDto.optional()
+  handle: UserHandleDto.optional(),
+  completedOnboarding: z.boolean().optional()
 });
