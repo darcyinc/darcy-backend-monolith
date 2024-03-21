@@ -54,13 +54,17 @@ export const GET = async (req: FastifyRequest<{ Params: { handle: string } }>, r
     followersCount,
     followingCount: user.followingIds.length,
     isFollowing: currentUser?.followingIds.includes(user.id) ?? false,
+    onboardingComplete: undefined,
     followingIds: undefined,
     id: undefined
   });
 };
 
 export const PATCH = async (
-  req: FastifyRequest<{ Params: { handle: string }; Body: { displayName?: string; handle?: string; bio?: string } }>,
+  req: FastifyRequest<{
+    Params: { handle: string };
+    Body: { displayName?: string; handle?: string; bio?: string; completedOnboarding: boolean };
+  }>,
   reply: FastifyReply
 ) => {
   // Only allow updating the @me user
@@ -91,6 +95,12 @@ export const PATCH = async (
   const user = await getUserByEmail(authData.email);
   if (!user) return reply.status(404).send({ error: 'user_not_found', message: 'User not found.' });
 
+  if (parsedData.data.completedOnboarding === false) {
+    if (user.completedOnboarding) {
+      return reply.status(409).send({ error: 'onboarding_already_completed', message: 'User has already completed onboarding.' });
+    }
+  }
+
   if (parsedData.data.handle) {
     const handleExists = await getUserByHandle(parsedData.data.handle);
     if (handleExists && handleExists.id !== user.id) {
@@ -104,7 +114,8 @@ export const PATCH = async (
       data: {
         displayName: data.displayName || user.displayName,
         handle: data.handle || user.handle,
-        bio: data.bio || user.bio
+        bio: data.bio || user.bio,
+        completedOnboarding: parsedData.data.completedOnboarding || user.completedOnboarding
       }
     }),
     db.user.count({
