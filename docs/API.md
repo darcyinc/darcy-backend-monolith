@@ -4,7 +4,7 @@ The API is built using Next.js [Route Handlers](https://nextjs.org/docs/app/buil
 
 ## Endpoints
 
-In development, the API base URL is `http://localhost`.
+In development, the API base URL is `http://localhost:3000`.
 
 ### API Errors
 

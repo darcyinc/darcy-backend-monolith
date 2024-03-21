@@ -26,32 +26,23 @@ export const POST = async (req: FastifyRequest<{ Body: { code: string } }>, repl
     }
 
     let token = '';
-    const existingUser = await db.userAuth.findFirst({ where: { email: userData.email } });
+    let userAuth = await db.userAuth.findFirst({ where: { email: userData.email } });
 
-    if (existingUser) {
-      token = await signToken({ email: userData.email, updatedAt: existingUser.updatedAt.getTime() });
-    } else {
-      const newUser = await db.user.create({
+    if (!userAuth) {
+      userAuth = await db.userAuth.create({
         data: {
-          auth: {
+          email: userData.email,
+          user: {
             create: {
-              email: userData.email
+              displayName: userData.username,
+              handle: generateHandleFromEmail(userData.email)
             }
-          },
-          displayName: userData.username,
-          handle: generateHandleFromEmail(userData.email)
-        },
-        include: {
-          auth: true
+          }
         }
       });
-
-      if (!newUser.auth) {
-        throw new Error();
-      }
-
-      token = await signToken({ email: newUser.auth.email, updatedAt: newUser.auth.updatedAt.getTime() });
     }
+
+    token = await signToken({ email: userAuth.email, updatedAt: userAuth.updatedAt.getTime() });
 
     reply.send({
       token
