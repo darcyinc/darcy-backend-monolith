@@ -14,12 +14,6 @@ dependencies:
   fastify:
     specifier: ^4.26.1
     version: 4.26.1
-  husky:
-    specifier: ^9.0.11
-    version: 9.0.11
-  is-ci:
-    specifier: ^3.0.1
-    version: 3.0.1
   jsonwebtoken:
     specifier: ^9.0.2
     version: 9.0.2
@@ -37,6 +31,9 @@ devDependencies:
   '@types/node':
     specifier: ^20.11.20
     version: 20.11.20
+  husky:
+    specifier: ^9.0.11
+    version: 9.0.11
   prisma:
     specifier: ^5.10.2
     version: 5.10.2
@@ -762,11 +759,6 @@ packages:
       fsevents: 2.3.3
     dev: true
 
-  /ci-info@3.9.0:
-    resolution: {integrity: sha512-NIxF55hv4nSqQswkAeiOi1r83xy8JldOFDTWiug55KBu9Jnblncd2U6ViHmYgHf01TPZS77NJBhBMKdWj9HQMQ==}
-    engines: {node: '>=8'}
-    dev: false
-
   /color-convert@2.0.1:
     resolution: {integrity: sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ==}
     engines: {node: '>=7.0.0'}
@@ -1053,7 +1045,7 @@ packages:
     resolution: {integrity: sha512-AB6lFlbwwyIqMdHYhwPe+kjOC3Oc5P3nThEoW/AaO2BX3vJDjWPFxYLxokUZOo6RNX20He3AaT8sESs9NJcmEw==}
     engines: {node: '>=18'}
     hasBin: true
-    dev: false
+    dev: true
 
   /ieee754@1.2.1:
     resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==}
@@ -1075,13 +1067,6 @@ packages:
     dependencies:
       binary-extensions: 2.2.0
     dev: true
-
-  /is-ci@3.0.1:
-    resolution: {integrity: sha512-ZYvCgrefwqoQ6yTyYUbQu64HsITZ3NfKX1lzaEYdkTDcfKzzCI/wthRRYKkdjHKFVgNiXKAKm65Zo1pk2as/QQ==}
-    hasBin: true
-    dependencies:
-      ci-info: 3.9.0
-    dev: false
 
   /is-extglob@2.1.1:
     resolution: {integrity: sha512-SbKbANkN603Vi4jEZv49LeVJMn4yGwsbzZworEoyEiutsN3nJYdbO36zfhGJ6QEDpOZIFkDtnq5JRxmvl3jsoQ==}
