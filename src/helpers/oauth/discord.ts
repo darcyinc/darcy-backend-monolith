@@ -1,4 +1,4 @@
-import { DiscordTokenDto, DiscordUserDto } from '@/dtos/auth/callback/discord';
+import type { DiscordTokenDto, DiscordUserDto } from '@/dtos/auth/callback/discord';
 import { env } from '@/validations/env';
 
 export const DISCORD_CALLBACK_URL = `${env.WEBSITE_URL}/auth/callback/discord`;

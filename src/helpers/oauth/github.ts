@@ -1,4 +1,4 @@
-import { GithubTokenDto, GithubUserDto } from '@/dtos/auth/callback/github';
+import type { GithubTokenDto, GithubUserDto } from '@/dtos/auth/callback/github';
 import { env } from '@/validations/env';
 
 export const GITHUB_CALLBACK_URL = `${env.WEBSITE_URL}/auth/callback/github`;

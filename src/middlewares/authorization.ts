@@ -1,5 +1,5 @@
 import { decodeToken } from '@/helpers/jwt';
-import { FastifyRequest } from 'fastify';
+import type { FastifyRequest } from 'fastify';
 
 interface UnauthorizedResponse {
   authorized: false;

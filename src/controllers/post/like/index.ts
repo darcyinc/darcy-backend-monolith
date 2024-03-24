@@ -1,7 +1,7 @@
 import { db } from '@/helpers/db';
 import requireAuthorization from '@/middlewares/authorization';
 import { getUserByEmail } from '@/services/users';
-import { FastifyReply, FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
 export const POST = async (req: FastifyRequest<{ Params: { postId: string } }>, reply: FastifyReply) => {
   const { params } = req;

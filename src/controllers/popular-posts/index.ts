@@ -1,8 +1,8 @@
 import { FollowingLimitDto, FollowingPageDto } from '@/dtos/users/following';
 import { db } from '@/helpers/db';
 import requireAuthorization from '@/middlewares/authorization';
-import { User } from '@prisma/client';
-import { FastifyReply, FastifyRequest } from 'fastify';
+import type { User } from '@prisma/client';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
 export const GET = async (req: FastifyRequest<{ Querystring: { page?: string; limit?: string } }>, reply: FastifyReply) => {
   const { page, limit } = req.query;

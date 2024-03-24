@@ -3,7 +3,7 @@ import { db } from '@/helpers/db';
 import { signToken } from '@/helpers/jwt';
 import { getDiscordToken, getDiscordUserData } from '@/helpers/oauth/discord';
 import generateHandleFromEmail from '@/helpers/oauth/generateHandle';
-import { FastifyReply, FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
 export const POST = async (req: FastifyRequest<{ Body: { code: string } }>, reply: FastifyReply) => {
   const validatedCode = await AuthCallbackDto.safeParseAsync(req.body);

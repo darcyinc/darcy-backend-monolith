@@ -1,7 +1,7 @@
 import * as PostController from '@/controllers/post';
 import * as GetPostController from '@/controllers/post/get-post';
 import * as LikePostController from '@/controllers/post/like';
-import { FastifyInstance } from 'fastify';
+import type { FastifyInstance } from 'fastify';
 
 export default function postRouter(fastify: FastifyInstance, _: unknown, done: () => void) {
   fastify.post('/', PostController.POST);

@@ -2,8 +2,8 @@ import { CreatePostDto } from '@/dtos/post';
 import { db } from '@/helpers/db';
 import requireAuthorization from '@/middlewares/authorization';
 import { getUserByEmail } from '@/services/users';
-import { FastifyReply, FastifyRequest } from 'fastify';
-import { z } from 'zod';
+import type { FastifyReply, FastifyRequest } from 'fastify';
+import type { z } from 'zod';
 
 export const POST = async (req: FastifyRequest<{ Body: z.infer<typeof CreatePostDto> }>, reply: FastifyReply) => {
   const { body } = req;
