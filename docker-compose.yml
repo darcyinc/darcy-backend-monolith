@@ -40,7 +40,7 @@ services:
     depends_on:
       - api01
     ports:
-      - 3000
+      - 3001
 
   proxy:
     image: nginx:latest
