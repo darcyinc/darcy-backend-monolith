@@ -64,6 +64,7 @@ export const GET = async (
       createdAt: 'desc'
     },
     include: {
+      comments: true,
       author: {
         select: {
           avatarUrl: true,
@@ -88,6 +89,7 @@ export const GET = async (
   return reply.status(200).send(
     comments.map((comment) => ({
       ...comment,
+      commentCount: comment.comments.length,
       authorId: undefined,
       likedIds: undefined,
       likeCount: post.likedIds.length,

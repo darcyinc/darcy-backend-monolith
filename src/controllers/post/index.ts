@@ -14,6 +14,7 @@ export const GET = async (req: FastifyRequest<{ Params: { postId: string } }>, r
       id: params.postId
     },
     include: {
+      comments: true,
       author: {
         select: {
           avatarUrl: true,
@@ -44,6 +45,7 @@ export const GET = async (req: FastifyRequest<{ Params: { postId: string } }>, r
 
   return reply.status(200).send({
     ...post,
+    commentCount: post.comments.length,
     authorId: undefined,
     likedIds: undefined,
     likeCount: post.likedIds.length,
@@ -88,6 +90,7 @@ export const POST = async (req: FastifyRequest<{ Body: z.infer<typeof CreatePost
       content: parsedData.data.content
     },
     include: {
+      comments: true,
       author: {
         select: {
           avatarUrl: true,
@@ -101,6 +104,7 @@ export const POST = async (req: FastifyRequest<{ Body: z.infer<typeof CreatePost
 
   return reply.status(201).send({
     ...post,
+    commentCount: post.comments.length,
     likedIds: undefined,
     likeCount: 0,
     hasLiked: false

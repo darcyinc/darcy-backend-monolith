@@ -75,8 +75,6 @@ model Post {
 
   comments   Post[]  @relation("CommentOf")
   parentPost Post?   @relation("CommentOf", fields: [parentId], references: [id])
+  // TODO: rename to parentPostId
   parentId   String?
-
-  // Define the counts
-  commentCount Int @default(0)
 }

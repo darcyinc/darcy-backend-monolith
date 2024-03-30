@@ -32,6 +32,7 @@ export const GET = async (req: FastifyRequest<{ Querystring: { page?: string; li
       }
     },
     include: {
+      comments: true,
       author: {
         select: {
           displayName: true,
@@ -66,6 +67,7 @@ export const GET = async (req: FastifyRequest<{ Querystring: { page?: string; li
         .map((post) => ({
           ...post,
           authorId: undefined,
+          commentCount: post.comments.length,
           likedIds: undefined,
           likeCount: post.likedIds.length,
           hasLiked: user ? post.likedIds.includes(user.id) : false

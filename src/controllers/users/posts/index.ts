@@ -63,6 +63,9 @@ export const GET = async (
     },
     include: {
       posts: {
+        include: {
+          comments: true
+        },
         where: {
           // if postType is posts, we want to get all posts
           // if postType is replies, we want to get all replies
@@ -81,6 +84,7 @@ export const GET = async (
     posts.map((post) => ({
       ...post,
       authorId: undefined,
+      commentCount: post.comments.length,
       likedIds: undefined,
       likeCount: post.likedIds.length,
       hasLiked: userWhoRequested ? post.likedIds.includes(userWhoRequested.id) : false
