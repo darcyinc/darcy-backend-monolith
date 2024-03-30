@@ -67,7 +67,7 @@ export const POST = async (req: FastifyRequest<{ Body: z.infer<typeof CreatePost
   const user = await getUserByEmail(authData.email);
   if (!user) return reply.status(404).send({ error: 'user_not_found', message: 'User not found.' });
 
-  const parentPostId = parsedData.data.parent;
+  const parentPostId = parsedData.data.parentId;
 
   if (parentPostId) {
     const parentPost = await db.post.findUnique({
