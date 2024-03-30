@@ -25,7 +25,6 @@ export const POST = async (req: FastifyRequest<{ Body: { code: string } }>, repl
       });
     }
 
-    let token = '';
     let userAuth = await db.userAuth.findFirst({ where: { email: userData.email } });
 
     if (!userAuth) {
@@ -44,7 +43,7 @@ export const POST = async (req: FastifyRequest<{ Body: { code: string } }>, repl
       });
     }
 
-    token = await signToken({ email: userAuth.email, updatedAt: userAuth.updatedAt.getTime() });
+    const token = await signToken({ email: userAuth.email, updatedAt: userAuth.updatedAt.getTime() });
 
     reply.send({
       token
