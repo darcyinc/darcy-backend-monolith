@@ -17,20 +17,20 @@
   },
   "dependencies": {
     "@fastify/cors": "^9.0.1",
-    "@prisma/client": "^5.11.0",
+    "@prisma/client": "^5.12.1",
     "fastify": "^4.26.2",
     "fastify-type-provider-zod": "^1.1.9",
     "jsonwebtoken": "^9.0.2",
-    "zod": "^3.22.4"
+    "zod": "^3.23.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.6.2",
+    "@biomejs/biome": "^1.7.0",
     "@types/jsonwebtoken": "^9.0.6",
-    "@types/node": "^20.11.30",
+    "@types/node": "^20.12.7",
     "husky": "^9.0.11",
-    "prisma": "^5.11.0",
+    "prisma": "^5.12.1",
     "tsup": "^8.0.2",
-    "typescript": "^5.4.3"
+    "typescript": "^5.4.5"
   },
   "packageManager": "pnpm@8.15.7"
 }
