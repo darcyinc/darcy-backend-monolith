@@ -1,7 +1,6 @@
 import * as PopularPostsController from '@/controllers/popular-posts';
-import type { FastifyInstance } from 'fastify';
+import type { AppInstance } from '@/index';
 
-export default function popularPostsRouter(fastify: FastifyInstance, _: unknown, done: () => void) {
-  fastify.get('/', PopularPostsController.GET);
-  done();
+export async function popularPostsRouter(app: AppInstance) {
+  app.register(PopularPostsController.getPopularPosts);
 }

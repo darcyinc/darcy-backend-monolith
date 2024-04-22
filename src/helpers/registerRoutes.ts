@@ -1,12 +1,9 @@
-import authRouter from '@/routes/auth';
-import popularPostsRouter from '@/routes/popular-posts';
-import postRouter from '@/routes/post';
-import userRouter from '@/routes/users';
-import type { FastifyInstance } from 'fastify';
+import { authRouter, popularPostsRouter, postsRouter, userRouter } from '@/routes';
+import type { AppInstance } from '..';
 
-export function registerRoutes(app: FastifyInstance) {
+export async function registerRoutes(app: AppInstance) {
   app.register(authRouter, { prefix: '/auth' });
   app.register(userRouter, { prefix: '/users' });
-  app.register(postRouter, { prefix: '/post' });
+  app.register(postsRouter, { prefix: '/post' });
   app.register(popularPostsRouter, { prefix: '/popular-posts' });
 }

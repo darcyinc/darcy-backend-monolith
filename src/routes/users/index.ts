@@ -1,20 +1,12 @@
 import * as UsersController from '@/controllers/users';
-import * as FollowUsersController from '@/controllers/users/follow';
-import * as FollowersUsersController from '@/controllers/users/followers';
-import * as FollowingUsersController from '@/controllers/users/following';
-import * as PostUsersController from '@/controllers/users/posts';
-import type { FastifyInstance } from 'fastify';
+import type { AppInstance } from '@/index';
 
-export default function userRouter(fastify: FastifyInstance, _: unknown, done: () => void) {
-  fastify.get('/:handle', UsersController.GET);
-  fastify.patch('/:handle', UsersController.PATCH);
-
-  fastify.get('/:handle/followers', FollowersUsersController.GET);
-  fastify.get('/:handle/following', FollowingUsersController.GET);
-
-  fastify.post('/:handle/follow', FollowUsersController.POST);
-  fastify.delete('/:handle/follow', FollowUsersController.DELETE);
-
-  fastify.get('/:handle/posts', PostUsersController.GET);
-  done();
+export async function userRouter(app: AppInstance) {
+  app.register(UsersController.getUser);
+  app.register(UsersController.getUserFollowing);
+  app.register(UsersController.getUserFollowers);
+  app.register(UsersController.getUserPosts);
+  app.register(UsersController.editUser);
+  app.register(UsersController.followUser);
+  app.register(UsersController.unfollowUser);
 }
