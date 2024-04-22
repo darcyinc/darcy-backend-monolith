@@ -1,133 +1,153 @@
 import { PatchUserDto } from '@/dtos/users';
 import { db } from '@/helpers/db';
-import requireAuthorization from '@/middlewares/authorization';
+import type { AppInstance } from '@/index';
+import { enforceAuthorization } from '@/middlewares/enforce-authorization';
+import { optionalAuthorization } from '@/middlewares/optional-authorization';
 import { getUserByEmail, getUserByHandle } from '@/services/users';
-import type { FastifyReply, FastifyRequest } from 'fastify';
+import { z } from 'zod';
 
-export const GET = async (req: FastifyRequest<{ Params: { handle: string } }>, reply: FastifyReply) => {
-  const authData = await requireAuthorization(req);
+export * from './follow';
+export * from './followers';
+export * from './following';
+export * from './posts';
 
-  if (req.params.handle === '@me') {
-    if (!authData.authorized) return authData.response;
-
-    const user = await getUserByEmail(authData.email);
-    if (!user) return reply.status(404).send({ error: 'user_not_found', message: 'User not found.' });
-
-    const followersCount = await db.user.count({
-      where: {
-        followingIds: {
-          has: user.id
-        }
-      }
-    });
-
-    return reply.send({
-      ...user,
-      followersCount,
-      followingCount: user.followingIds.length,
-      followingIds: undefined,
-      id: undefined
-    });
-  }
-
-  const user = await getUserByHandle(req.params.handle);
-  if (!user) return reply.status(404).send({ error: 'user_not_found', message: 'User not found.' });
-
-  // get follower count and check if current user follows target user
-  const [currentUser, followersCount] = await Promise.all([
-    authData.authorized
-      ? db.user.findFirst({
-          where: { auth: { email: authData.email } }
+export async function getUser(app: AppInstance) {
+  app.get(
+    '/:handle',
+    {
+      onRequest: [optionalAuthorization] as never,
+      schema: {
+        params: z.object({
+          handle: z.string()
         })
-      : null,
-    db.user.count({
-      where: {
-        followingIds: {
-          has: user.id
-        }
       }
-    })
-  ]);
+    },
+    async (request, reply) => {
+      const { authorized, email } = request.authorization;
 
-  return reply.send({
-    ...user,
-    followersCount,
-    followingCount: user.followingIds.length,
-    isFollowing: currentUser?.followingIds.includes(user.id) ?? false,
-    onboardingComplete: undefined,
-    followingIds: undefined,
-    id: undefined
-  });
-};
+      if (request.params.handle === '@me') {
+        if (!authorized)
+          return reply.status(401).send({
+            error: 'Unauthorized'
+          });
 
-export const PATCH = async (
-  req: FastifyRequest<{
-    Params: { handle: string };
-    Body: { displayName?: string; handle?: string; bio?: string; completedOnboarding: boolean };
-  }>,
-  reply: FastifyReply
-) => {
-  // Only allow updating the @me user
-  if (req.params.handle !== '@me') {
-    return new Response(
-      JSON.stringify({
-        error: 'update_user_with_at_handle',
-        message: 'To update a user, you must use the @me handle'
-      }),
-      {
-        status: 401
+        const user = await getUserByEmail(email);
+        if (!user) return reply.status(404).send({ error: 'user_not_found', message: 'User not found.' });
+
+        const followersCount = await db.user.count({
+          where: {
+            followingIds: {
+              has: user.id
+            }
+          }
+        });
+
+        return reply.send({
+          ...user,
+          followersCount,
+          followingCount: user.followingIds.length,
+          followingIds: undefined,
+          id: undefined
+        });
       }
-    );
-  }
 
-  const data = req.body;
-  const parsedData = await PatchUserDto.safeParseAsync(data);
+      const user = await getUserByHandle(request.params.handle);
+      if (!user) return reply.status(404).send({ error: 'user_not_found', message: 'User not found.' });
 
-  if (!parsedData.success) {
-    return reply.status(400).send({
-      error: parsedData.error.errors[0].message
-    });
-  }
+      // get follower count and check if current user follows target user
+      const [currentUser, followersCount] = await Promise.all([
+        authorized
+          ? db.user.findFirst({
+              where: { auth: { email: email } }
+            })
+          : null,
+        db.user.count({
+          where: {
+            followingIds: {
+              has: user.id
+            }
+          }
+        })
+      ]);
 
-  const authData = await requireAuthorization(req);
-  if (!authData.authorized) return authData.response;
-
-  const user = await getUserByEmail(authData.email);
-  if (!user) return reply.status(404).send({ error: 'user_not_found', message: 'User not found.' });
-
-  if (parsedData.data.completedOnboarding === false) {
-    if (user.completedOnboarding) {
-      return reply.status(409).send({ error: 'onboarding_already_completed', message: 'User has already completed onboarding.' });
+      return reply.send({
+        ...user,
+        followersCount,
+        followingCount: user.followingIds.length,
+        isFollowing: currentUser?.followingIds.includes(user.id) ?? false,
+        onboardingComplete: undefined,
+        followingIds: undefined,
+        id: undefined
+      });
     }
-  }
-
-  if (parsedData.data.handle) {
-    const handleExists = await getUserByHandle(parsedData.data.handle);
-    if (handleExists && handleExists.id !== user.id) {
-      return reply.status(409).send({ error: 'handle_already_user', message: 'Handle is being used by another user.' });
-    }
-  }
-
-  const [newUser, followersCount] = await Promise.all([
-    db.user.update({
-      where: { id: user.id },
-      data: {
-        displayName: data.displayName || user.displayName,
-        handle: data.handle || user.handle,
-        bio: data.bio || user.bio,
-        completedOnboarding: parsedData.data.completedOnboarding || user.completedOnboarding
-      }
-    }),
-    db.user.count({
-      where: {
-        followingIds: {
-          has: user.id
-        }
-      }
-    })
-  ]);
-
-  return new Response(
-    JSON.stringify({ ...newUser, followersCount, followingCount: user.followingIds.length, followingIds: undefined, id: undefined })
   );
-};
+}
+
+export async function editUser(app: AppInstance) {
+  app.patch(
+    '/:handle',
+    {
+      onRequest: [enforceAuthorization] as never,
+      schema: {
+        params: z.object({
+          handle: z.string()
+        }),
+        body: PatchUserDto
+      }
+    },
+    async (request, reply) => {
+      if (!request.authorization.authorized) {
+        return reply.status(401).send({
+          error: 'Unauthorized'
+        });
+      }
+
+      // Only allow updating the @me user
+      if (request.params.handle !== '@me') {
+        return reply.status(401).send({
+          error: 'update_user_with_at_handle',
+          message: 'To update a user, you must use the @me handle'
+        });
+      }
+
+      const data = request.body;
+
+      const user = await getUserByEmail(request.authorization.email);
+      if (!user) return reply.status(404).send({ error: 'user_not_found', message: 'User not found.' });
+
+      if (data.completedOnboarding === false) {
+        if (user.completedOnboarding) {
+          return reply.status(409).send({ error: 'onboarding_already_completed', message: 'User has already completed onboarding.' });
+        }
+      }
+
+      if (data.handle) {
+        const handleExists = await getUserByHandle(data.handle);
+        if (handleExists && handleExists.id !== user.id) {
+          return reply.status(409).send({ error: 'handle_already_user', message: 'Handle is being used by another user.' });
+        }
+      }
+
+      const [newUser, followersCount] = await Promise.all([
+        db.user.update({
+          where: { id: user.id },
+          data: {
+            displayName: data.displayName || user.displayName,
+            handle: data.handle || user.handle,
+            bio: data.bio || user.bio,
+            completedOnboarding: data.completedOnboarding || user.completedOnboarding
+          }
+        }),
+        db.user.count({
+          where: {
+            followingIds: {
+              has: user.id
+            }
+          }
+        })
+      ]);
+
+      return reply.send({ ...newUser, followersCount, followingCount: user.followingIds.length, followingIds: undefined, id: undefined });
+    }
+  );
+}

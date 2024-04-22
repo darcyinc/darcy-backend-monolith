@@ -1,112 +1,136 @@
 import { CreatePostDto } from '@/dtos/post';
 import { db } from '@/helpers/db';
-import requireAuthorization from '@/middlewares/authorization';
+import type { AppInstance } from '@/index';
+import { enforceAuthorization } from '@/middlewares/enforce-authorization';
+import { optionalAuthorization } from '@/middlewares/optional-authorization';
 import { getUserByEmail } from '@/services/users';
-import type { FastifyReply, FastifyRequest } from 'fastify';
-import type { z } from 'zod';
+import { z } from 'zod';
 
-export const GET = async (req: FastifyRequest<{ Params: { postId: string } }>, reply: FastifyReply) => {
-  const { params } = req;
-  const authData = await requireAuthorization(req);
+export * from './comments';
+export * from './like';
 
-  const post = await db.post.findUnique({
-    where: {
-      id: params.postId
+export async function getPost(app: AppInstance) {
+  app.get(
+    '/:postId',
+    {
+      onRequest: [optionalAuthorization] as never,
+      schema: {
+        params: z.object({
+          postId: z.string()
+        })
+      }
     },
-    include: {
-      comments: true,
-      author: {
-        select: {
-          avatarUrl: true,
-          displayName: true,
-          handle: true,
-          private: true,
-          verified: true
+    async (request, reply) => {
+      const { params } = request;
+      const { authorized, email } = request.authorization;
+
+      const post = await db.post.findUnique({
+        where: {
+          id: params.postId
+        },
+        include: {
+          comments: true,
+          author: {
+            select: {
+              avatarUrl: true,
+              displayName: true,
+              handle: true,
+              private: true,
+              verified: true
+            }
+          }
+        }
+      });
+
+      if (!post) return reply.status(404).send({ error: 'post_not_found', message: 'Post not found.' });
+
+      if (post.author.private) {
+        if (!authorized)
+          return reply.status(401).send({
+            error: 'Unauthorized'
+          });
+
+        return reply.status(403).send({ error: 'get_post_private', message: 'This post is private. You must follow the user to see it.' });
+      }
+
+      let hasLiked = false;
+
+      if (authorized) {
+        const user = await getUserByEmail(email);
+        if (!user) return reply.status(404).send({ error: 'user_not_found', message: 'User not found.' });
+        hasLiked = post.likedIds.includes(user.id);
+      }
+
+      return reply.status(200).send({
+        ...post,
+        commentCount: post.comments.length,
+        authorId: undefined,
+        likedIds: undefined,
+        likeCount: post.likedIds.length,
+        hasLiked
+      });
+    }
+  );
+}
+
+export async function createPost(app: AppInstance) {
+  app.post(
+    '/',
+    {
+      onRequest: [enforceAuthorization] as never,
+      schema: {
+        body: CreatePostDto
+      }
+    },
+    async (request, reply) => {
+      const { body } = request;
+      const { authorized, email } = request.authorization;
+
+      if (!authorized) return;
+
+      const user = await getUserByEmail(email);
+      if (!user) return reply.status(404).send({ error: 'user_not_found', message: 'User not found.' });
+
+      const parentPostId = body.parentId;
+
+      if (parentPostId) {
+        const parentPost = await db.post.findUnique({
+          where: {
+            id: parentPostId
+          }
+        });
+
+        if (!parentPost) {
+          return reply.status(404).send({ error: 'parent_post_not_found', message: 'Parent post not found.' });
         }
       }
-    }
-  });
 
-  if (!post) return reply.status(404).send({ error: 'post_not_found', message: 'Post not found.' });
-
-  if (post.author.private) {
-    if (!authData.authorized) return authData.response;
-
-    return reply.status(403).send({ error: 'get_post_private', message: 'This post is private. You must follow the user to see it.' });
-  }
-
-  let hasLiked = false;
-
-  if (authData.authorized) {
-    const user = await getUserByEmail(authData.email);
-    if (!user) return reply.status(404).send({ error: 'user_not_found', message: 'User not found.' });
-    hasLiked = post.likedIds.includes(user.id);
-  }
-
-  return reply.status(200).send({
-    ...post,
-    commentCount: post.comments.length,
-    authorId: undefined,
-    likedIds: undefined,
-    likeCount: post.likedIds.length,
-    hasLiked
-  });
-};
-
-export const POST = async (req: FastifyRequest<{ Body: z.infer<typeof CreatePostDto> }>, reply: FastifyReply) => {
-  const { body } = req;
-
-  const parsedData = await CreatePostDto.safeParseAsync(body);
-  if (!parsedData.success) {
-    return reply.status(400).send({
-      error: parsedData.error.errors[0].message
-    });
-  }
-
-  const authData = await requireAuthorization(req);
-  if (!authData.authorized) return authData.response;
-
-  const user = await getUserByEmail(authData.email);
-  if (!user) return reply.status(404).send({ error: 'user_not_found', message: 'User not found.' });
-
-  const parentPostId = parsedData.data.parentId;
-
-  if (parentPostId) {
-    const parentPost = await db.post.findUnique({
-      where: {
-        id: parentPostId
-      }
-    });
-
-    if (!parentPost) {
-      return reply.status(404).send({ error: 'parent_post_not_found', message: 'Parent post not found.' });
-    }
-  }
-
-  const post = await db.post.create({
-    data: {
-      authorId: user.id,
-      parentId: parentPostId,
-      content: parsedData.data.content
-    },
-    include: {
-      comments: true,
-      author: {
-        select: {
-          avatarUrl: true,
-          displayName: true,
-          handle: true,
-          verified: true
+      const post = await db.post.create({
+        data: {
+          authorId: user.id,
+          parentId: parentPostId,
+          content: body.content
+        },
+        include: {
+          comments: true,
+          author: {
+            select: {
+              avatarUrl: true,
+              displayName: true,
+              handle: true,
+              verified: true
+            }
+          }
         }
-      }
-    }
-  });
+      });
 
-  return reply.status(201).send({
-    ...post,
-    commentCount: post.comments.length,
-    likedIds: undefined,
-    likeCount: 0,
-    hasLiked: false
-  });
-};
+      return reply.status(201).send({
+        ...post,
+        commentCount: post.comments.length,
+        likedIds: undefined,
+        likeCount: 0,
+        hasLiked: false
+      });
+    }
+  );
+}
