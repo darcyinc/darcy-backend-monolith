@@ -31,7 +31,7 @@ export const getGithubToken = async (code: string) => {
 export const getGithubUserData = async (token: string) => {
   const request = await fetch('https://api.github.com/user', {
     headers: {
-      Authorization: `token ${token}`
+      Authorization: `Bearer ${token}`
     }
   });
   const data = (await request.json()) as GithubUserDto;
