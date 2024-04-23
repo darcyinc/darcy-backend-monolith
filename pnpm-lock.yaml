@@ -19,13 +19,13 @@ importers:
         version: 4.26.2
       fastify-type-provider-zod:
         specifier: ^1.1.9
-        version: 1.1.9(fastify@4.26.2)(zod@3.23.0)
+        version: 1.1.9(fastify@4.26.2)(zod@3.23.3)
       jsonwebtoken:
         specifier: ^9.0.2
         version: 9.0.2
       zod:
         specifier: ^3.23.0
-        version: 3.23.0
+        version: 3.23.3
     devDependencies:
       '@biomejs/biome':
         specifier: ^1.7.0
@@ -1099,8 +1099,8 @@ packages:
     peerDependencies:
       zod: ^3.22.4
 
-  zod@3.23.0:
-    resolution: {integrity: sha512-OFLT+LTocvabn6q76BTwVB0hExEBS0IduTr3cqZyMqEDbOnYmcU+y0tUAYbND4uwclpBGi4I4UUBGzylWpjLGA==}
+  zod@3.23.3:
+    resolution: {integrity: sha512-tPvq1B/2Yu/dh2uAIH2/BhUlUeLIUvAjr6dpL/75I0pCYefHgjhXk1o1Kob3kTU8C7yU1j396jFHlsVWFi9ogg==}
 
 snapshots:
 
@@ -1271,7 +1271,7 @@ snapshots:
     optional: true
 
   '@prisma/client@5.12.1(prisma@5.12.1)':
-    dependencies:
+    optionalDependencies:
       prisma: 5.12.1
 
   '@prisma/debug@5.12.1': {}
@@ -1360,11 +1360,11 @@ snapshots:
   abstract-logging@2.0.1: {}
 
   ajv-formats@2.1.1(ajv@8.12.0):
-    dependencies:
+    optionalDependencies:
       ajv: 8.12.0
 
   ajv-formats@3.0.1(ajv@8.12.0):
-    dependencies:
+    optionalDependencies:
       ajv: 8.12.0
 
   ajv@8.12.0:
@@ -1556,11 +1556,11 @@ snapshots:
 
   fastify-plugin@4.5.1: {}
 
-  fastify-type-provider-zod@1.1.9(fastify@4.26.2)(zod@3.23.0):
+  fastify-type-provider-zod@1.1.9(fastify@4.26.2)(zod@3.23.3):
     dependencies:
       fastify: 4.26.2
-      zod: 3.23.0
-      zod-to-json-schema: 3.22.5(zod@3.23.0)
+      zod: 3.23.3
+      zod-to-json-schema: 3.22.5(zod@3.23.3)
 
   fastify@4.26.2:
     dependencies:
@@ -2001,6 +2001,7 @@ snapshots:
       source-map: 0.8.0-beta.0
       sucrase: 3.35.0
       tree-kill: 1.2.2
+    optionalDependencies:
       typescript: 5.4.5
     transitivePeerDependencies:
       - supports-color
@@ -2042,8 +2043,8 @@ snapshots:
 
   yaml@2.4.1: {}
 
-  zod-to-json-schema@3.22.5(zod@3.23.0):
+  zod-to-json-schema@3.22.5(zod@3.23.3):
     dependencies:
-      zod: 3.23.0
+      zod: 3.23.3
 
-  zod@3.23.0: {}
+  zod@3.23.3: {}
