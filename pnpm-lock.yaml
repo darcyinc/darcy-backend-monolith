@@ -19,13 +19,13 @@ importers:
         version: 4.26.2
       fastify-type-provider-zod:
         specifier: ^1.1.9
-        version: 1.1.9(fastify@4.26.2)(zod@3.23.3)
+        version: 1.1.9(fastify@4.26.2)(zod@3.23.4)
       jsonwebtoken:
         specifier: ^9.0.2
         version: 9.0.2
       zod:
         specifier: ^3.23.0
-        version: 3.23.3
+        version: 3.23.4
     devDependencies:
       '@biomejs/biome':
         specifier: ^1.7.0
@@ -1099,8 +1099,8 @@ packages:
     peerDependencies:
       zod: ^3.22.4
 
-  zod@3.23.3:
-    resolution: {integrity: sha512-tPvq1B/2Yu/dh2uAIH2/BhUlUeLIUvAjr6dpL/75I0pCYefHgjhXk1o1Kob3kTU8C7yU1j396jFHlsVWFi9ogg==}
+  zod@3.23.4:
+    resolution: {integrity: sha512-/AtWOKbBgjzEYYQRNfoGKHObgfAZag6qUJX1VbHo2PRBgS+wfWagEY2mizjfyAPcGesrJOcx/wcl0L9WnVrHFw==}
 
 snapshots:
 
@@ -1556,11 +1556,11 @@ snapshots:
 
   fastify-plugin@4.5.1: {}
 
-  fastify-type-provider-zod@1.1.9(fastify@4.26.2)(zod@3.23.3):
+  fastify-type-provider-zod@1.1.9(fastify@4.26.2)(zod@3.23.4):
     dependencies:
       fastify: 4.26.2
-      zod: 3.23.3
-      zod-to-json-schema: 3.22.5(zod@3.23.3)
+      zod: 3.23.4
+      zod-to-json-schema: 3.22.5(zod@3.23.4)
 
   fastify@4.26.2:
     dependencies:
@@ -2043,8 +2043,8 @@ snapshots:
 
   yaml@2.4.1: {}
 
-  zod-to-json-schema@3.22.5(zod@3.23.3):
+  zod-to-json-schema@3.22.5(zod@3.23.4):
     dependencies:
-      zod: 3.23.3
+      zod: 3.23.4
 
-  zod@3.23.3: {}
+  zod@3.23.4: {}
