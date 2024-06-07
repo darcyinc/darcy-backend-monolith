@@ -1,5 +1,6 @@
 import { PatchUserDto } from '@/dtos/users';
 import { db } from '@/helpers/db';
+import { badRequest, notFound, ok } from '@/helpers/response';
 import type { AppInstance } from '@/index';
 import { enforceAuthorization } from '@/middlewares/enforce-authorization';
 import { optionalAuthorization } from '@/middlewares/optional-authorization';
@@ -10,6 +11,38 @@ export * from './follow';
 export * from './followers';
 export * from './following';
 export * from './posts';
+
+export async function getSelfUser(app: AppInstance) {
+  app.get(
+    '/@me',
+    {
+      onRequest: [enforceAuthorization] as never
+    },
+    async (request, reply) => {
+      const { authorized, email } = request.authorization;
+      if (!authorized) return;
+
+      const user = await getUserByEmail(email);
+      if (!user) return notFound({ reply });
+
+      const followersCount = await db.user.count({
+        where: {
+          followingIds: {
+            has: user.id
+          }
+        }
+      });
+
+      return reply.send({
+        ...user,
+        followersCount,
+        followingCount: user.followingIds.length,
+        followingIds: undefined,
+        id: undefined
+      });
+    }
+  );
+}
 
 export async function getUser(app: AppInstance) {
   app.get(
@@ -25,34 +58,8 @@ export async function getUser(app: AppInstance) {
     async (request, reply) => {
       const { authorized, email } = request.authorization;
 
-      if (request.params.handle === '@me') {
-        if (!authorized)
-          return reply.status(401).send({
-            error: 'Unauthorized'
-          });
-
-        const user = await getUserByEmail(email);
-        if (!user) return reply.status(404).send({ error: 'user_not_found', message: 'User not found.' });
-
-        const followersCount = await db.user.count({
-          where: {
-            followingIds: {
-              has: user.id
-            }
-          }
-        });
-
-        return reply.send({
-          ...user,
-          followersCount,
-          followingCount: user.followingIds.length,
-          followingIds: undefined,
-          id: undefined
-        });
-      }
-
       const user = await getUserByHandle(request.params.handle);
-      if (!user) return reply.status(404).send({ error: 'user_not_found', message: 'User not found.' });
+      if (!user) return notFound({ reply });
 
       // get follower count and check if current user follows target user
       const [currentUser, followersCount] = await Promise.all([
@@ -70,14 +77,17 @@ export async function getUser(app: AppInstance) {
         })
       ]);
 
-      return reply.send({
-        ...user,
-        followersCount,
-        followingCount: user.followingIds.length,
-        isFollowing: currentUser?.followingIds.includes(user.id) ?? false,
-        onboardingComplete: undefined,
-        followingIds: undefined,
-        id: undefined
+      return ok({
+        reply,
+        data: {
+          ...user,
+          followersCount,
+          followingCount: user.followingIds.length,
+          isFollowing: currentUser?.followingIds.includes(user.id) ?? false,
+          onboardingComplete: undefined,
+          followingIds: undefined,
+          id: undefined
+        }
       });
     }
   );
@@ -96,35 +106,23 @@ export async function editUser(app: AppInstance) {
       }
     },
     async (request, reply) => {
-      if (!request.authorization.authorized) {
-        return reply.status(401).send({
-          error: 'Unauthorized'
-        });
-      }
-
-      // Only allow updating the @me user
-      if (request.params.handle !== '@me') {
-        return reply.status(401).send({
-          error: 'update_user_with_at_handle',
-          message: 'To update a user, you must use the @me handle'
-        });
-      }
+      // for typings
+      if (!request.authorization.authorized) return;
 
       const data = request.body;
-
       const user = await getUserByEmail(request.authorization.email);
-      if (!user) return reply.status(404).send({ error: 'user_not_found', message: 'User not found.' });
+      if (!user) return notFound({ reply });
 
       if (data.completedOnboarding === false) {
         if (user.completedOnboarding) {
-          return reply.status(409).send({ error: 'onboarding_already_completed', message: 'User has already completed onboarding.' });
+          return badRequest({ reply, data: { error: 'onboarding_already_completed', message: 'User has already completed onboarding.' } });
         }
       }
 
       if (data.handle) {
         const handleExists = await getUserByHandle(data.handle);
         if (handleExists && handleExists.id !== user.id) {
-          return reply.status(409).send({ error: 'handle_already_user', message: 'Handle is being used by another user.' });
+          return badRequest({ reply, data: { error: 'handle_already_user', message: 'Handle is being used by another user.' } });
         }
       }
 
@@ -147,7 +145,10 @@ export async function editUser(app: AppInstance) {
         })
       ]);
 
-      return reply.send({ ...newUser, followersCount, followingCount: user.followingIds.length, followingIds: undefined, id: undefined });
+      return ok({
+        reply,
+        data: { ...newUser, followersCount, followingCount: user.followingIds.length, followingIds: undefined, id: undefined }
+      });
     }
   );
 }
