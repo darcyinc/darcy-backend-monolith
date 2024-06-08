@@ -1,6 +1,6 @@
+import { unauthorized } from '@/helpers/response';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import { optionalAuthorization } from './optional-authorization';
-import { unauthorized } from '@/helpers/response';
 
 export async function enforceAuthorization(request: FastifyRequest, reply: FastifyReply) {
   if (!request.authorization) {
