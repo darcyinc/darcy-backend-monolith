@@ -9,6 +9,7 @@ CREATE TABLE "User" (
     "bio" TEXT NOT NULL DEFAULT '',
     "private" BOOLEAN NOT NULL DEFAULT false,
     "verified" "VerifiedType" NOT NULL DEFAULT 'NONE',
+    "completedOnboarding" BOOLEAN NOT NULL DEFAULT false,
     "avatarUrl" TEXT NOT NULL DEFAULT '/assets/images/default-profile-picture.png',
     "bannerUrl" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -44,7 +45,6 @@ CREATE TABLE "Post" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "likedIds" TEXT[],
     "parentId" TEXT,
-    "commentCount" INTEGER NOT NULL DEFAULT 0,
 
     CONSTRAINT "Post_pkey" PRIMARY KEY ("id")
 );
