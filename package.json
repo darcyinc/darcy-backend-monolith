@@ -10,27 +10,26 @@
     "build": "tsup",
     "dev": "tsup --watch --onSuccess \"pnpm prod\"",
     "prod": "node --env-file=.env dist/index.js",
-    "prod:docker": "node dist/index.js",
     "lint": "biome check src",
-    "format": "pnpm run lint --apply",
+    "format": "pnpm run lint --write",
     "prepare": "husky"
   },
   "dependencies": {
     "@fastify/cors": "^9.0.1",
-    "@prisma/client": "^5.12.1",
+    "@prisma/client": "^5.15.0",
     "fastify": "^4.26.2",
     "fastify-type-provider-zod": "^1.1.9",
-    "jsonwebtoken": "^9.0.2",
-    "zod": "^3.23.0"
+    "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.7.0",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20.12.7",
     "husky": "^9.0.11",
-    "prisma": "^5.12.1",
+    "prisma": "5.16.0-dev.16",
     "tsup": "^8.0.2",
-    "typescript": "^5.4.5"
+    "typescript": "5.6.0-dev.20240608",
+    "zod": "3.24.0-canary.20240523T174819"
   },
   "packageManager": "pnpm@9.2.0"
 }

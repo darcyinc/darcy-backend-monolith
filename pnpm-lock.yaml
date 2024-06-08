@@ -12,20 +12,17 @@ importers:
         specifier: ^9.0.1
         version: 9.0.1
       '@prisma/client':
-        specifier: ^5.12.1
-        version: 5.15.0(prisma@5.15.0)
+        specifier: ^5.15.0
+        version: 5.15.0(prisma@5.16.0-dev.16)
       fastify:
         specifier: ^4.26.2
         version: 4.27.0
       fastify-type-provider-zod:
         specifier: ^1.1.9
-        version: 1.2.0(fastify@4.27.0)(zod@3.23.8)
+        version: 1.2.0(fastify@4.27.0)(zod@3.24.0-canary.20240523T174819)
       jsonwebtoken:
         specifier: ^9.0.2
         version: 9.0.2
-      zod:
-        specifier: ^3.23.0
-        version: 3.23.8
     devDependencies:
       '@biomejs/biome':
         specifier: ^1.7.0
@@ -40,14 +37,17 @@ importers:
         specifier: ^9.0.11
         version: 9.0.11
       prisma:
-        specifier: ^5.12.1
-        version: 5.15.0
+        specifier: 5.16.0-dev.16
+        version: 5.16.0-dev.16
       tsup:
         specifier: ^8.0.2
-        version: 8.1.0(typescript@5.4.5)
+        version: 8.1.0(typescript@5.6.0-dev.20240608)
       typescript:
-        specifier: ^5.4.5
-        version: 5.4.5
+        specifier: 5.6.0-dev.20240608
+        version: 5.6.0-dev.20240608
+      zod:
+        specifier: 3.24.0-canary.20240523T174819
+        version: 3.24.0-canary.20240523T174819
 
 packages:
 
@@ -304,20 +304,20 @@ packages:
       prisma:
         optional: true
 
-  '@prisma/debug@5.15.0':
-    resolution: {integrity: sha512-QpEAOjieLPc/4sMny/WrWqtpIAmBYsgqwWlWwIctqZO0AbhQ9QcT6x2Ut3ojbDo/pFRCCA1Z1+xm2MUy7fAkZA==}
+  '@prisma/debug@5.16.0-dev.16':
+    resolution: {integrity: sha512-CKR8+JCwxYBpeqU5JWooMWu73WmkHDqURKzogDZ5Wc0Y16s17qLuJt5mTfNyaaT/ocetD6TvcGvEUYZlAUpjsw==}
 
-  '@prisma/engines-version@5.15.0-29.12e25d8d06f6ea5a0252864dd9a03b1bb51f3022':
-    resolution: {integrity: sha512-3BEgZ41Qb4oWHz9kZNofToRvNeS4LZYaT9pienR1gWkjhky6t6K1NyeWNBkqSj2llgraUNbgMOCQPY4f7Qp5wA==}
+  '@prisma/engines-version@5.16.0-3.9ee8c029573a3ce47bd5f103da9feaf8b6f62c53':
+    resolution: {integrity: sha512-1W5RMJTDGflOzuG80eBIq05+zA7PNmtyRMh+CxtXRTxSn2crTKMehZh1aSXseIWgR8yEmZR2uzba5II/2hjMmg==}
 
-  '@prisma/engines@5.15.0':
-    resolution: {integrity: sha512-hXL5Sn9hh/ZpRKWiyPA5GbvF3laqBHKt6Vo70hYqqOhh5e0ZXDzHcdmxNvOefEFeqxra2DMz2hNbFoPvqrVe1w==}
+  '@prisma/engines@5.16.0-dev.16':
+    resolution: {integrity: sha512-IcOGHa1KnfVo2suK8NcpDDAQDvPeniLYTnfw96N/ZJHth9nZPuti0uGAPAGJr2kJmwWXnkYfjKRYonp05Rvo6w==}
 
-  '@prisma/fetch-engine@5.15.0':
-    resolution: {integrity: sha512-z6AY5yyXxc20Klj7wwnfGP0iIUkVKzybqapT02zLYR/nf9ynaeN8bq73WRmi1TkLYn+DJ5Qy+JGu7hBf1pE78A==}
+  '@prisma/fetch-engine@5.16.0-dev.16':
+    resolution: {integrity: sha512-3Oo83zTJ54CN8eByerCX+8kgSABb0od1LMLtR6h/+U1NlW/lcqq+8U8P0A4RBJB9UVeAujQZjXdMzATPQHlJtw==}
 
-  '@prisma/get-platform@5.15.0':
-    resolution: {integrity: sha512-1GULDkW4+/VQb73vihxCBSc4Chc2x88MA+O40tcZFjmBzG4/fF44PaXFxUqKSFltxU9L9GIMLhh0Gfkk/pUbtg==}
+  '@prisma/get-platform@5.16.0-dev.16':
+    resolution: {integrity: sha512-/TIaqmcBPnMPkh4NGW526iswDwEBBa+YAHT5rMxKbkmDhbbrGpPM+Uv2GA5EFSaaSjsk4EuP3Qj9r3OgCLHsLA==}
 
   '@rollup/rollup-android-arm-eabi@4.18.0':
     resolution: {integrity: sha512-Tya6xypR10giZV1XzxmH5wr25VcZSncG0pZIjfePT0OVBvqNEurzValetGNarVrGiq66EBVAFn15iYX4w6FKgQ==}
@@ -862,8 +862,8 @@ packages:
       ts-node:
         optional: true
 
-  prisma@5.15.0:
-    resolution: {integrity: sha512-JA81ACQSCi3a7NUOgonOIkdx8PAVkO+HbUOxmd00Yb8DgIIEpr2V9+Qe/j6MLxIgWtE/OtVQ54rVjfYRbZsCfw==}
+  prisma@5.16.0-dev.16:
+    resolution: {integrity: sha512-oRY5uzpY7ByKrQzJas9Wq5QDbUIcqGPWydjc+dStatHltWGPQW/KBLp3WLzQP0dMao9KbT29Ewj9sXJX+sLliQ==}
     engines: {node: '>=16.13'}
     hasBin: true
 
@@ -1058,8 +1058,8 @@ packages:
       typescript:
         optional: true
 
-  typescript@5.4.5:
-    resolution: {integrity: sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ==}
+  typescript@5.6.0-dev.20240608:
+    resolution: {integrity: sha512-6/A+e5am8S9wXo877O6OGZo+IbLWKfx/g/qlDNs+3QD3JPjHTM4eDXWue1uTPYuhAgXs7GoFagsSPRaRC3NWtw==}
     engines: {node: '>=14.17'}
     hasBin: true
 
@@ -1101,8 +1101,8 @@ packages:
     peerDependencies:
       zod: ^3.23.3
 
-  zod@3.23.8:
-    resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
+  zod@3.24.0-canary.20240523T174819:
+    resolution: {integrity: sha512-yRmms4cxDboI6CMHnY9DJRTPTAh5+RmYTpONAhZN3/0AK3AhJrkyjFFEMEyEK3Z+JWRBz3s728sw95Qnqegy2Q==}
 
 snapshots:
 
@@ -1272,30 +1272,30 @@ snapshots:
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
-  '@prisma/client@5.15.0(prisma@5.15.0)':
+  '@prisma/client@5.15.0(prisma@5.16.0-dev.16)':
     optionalDependencies:
-      prisma: 5.15.0
+      prisma: 5.16.0-dev.16
 
-  '@prisma/debug@5.15.0': {}
+  '@prisma/debug@5.16.0-dev.16': {}
 
-  '@prisma/engines-version@5.15.0-29.12e25d8d06f6ea5a0252864dd9a03b1bb51f3022': {}
+  '@prisma/engines-version@5.16.0-3.9ee8c029573a3ce47bd5f103da9feaf8b6f62c53': {}
 
-  '@prisma/engines@5.15.0':
+  '@prisma/engines@5.16.0-dev.16':
     dependencies:
-      '@prisma/debug': 5.15.0
-      '@prisma/engines-version': 5.15.0-29.12e25d8d06f6ea5a0252864dd9a03b1bb51f3022
-      '@prisma/fetch-engine': 5.15.0
-      '@prisma/get-platform': 5.15.0
+      '@prisma/debug': 5.16.0-dev.16
+      '@prisma/engines-version': 5.16.0-3.9ee8c029573a3ce47bd5f103da9feaf8b6f62c53
+      '@prisma/fetch-engine': 5.16.0-dev.16
+      '@prisma/get-platform': 5.16.0-dev.16
 
-  '@prisma/fetch-engine@5.15.0':
+  '@prisma/fetch-engine@5.16.0-dev.16':
     dependencies:
-      '@prisma/debug': 5.15.0
-      '@prisma/engines-version': 5.15.0-29.12e25d8d06f6ea5a0252864dd9a03b1bb51f3022
-      '@prisma/get-platform': 5.15.0
+      '@prisma/debug': 5.16.0-dev.16
+      '@prisma/engines-version': 5.16.0-3.9ee8c029573a3ce47bd5f103da9feaf8b6f62c53
+      '@prisma/get-platform': 5.16.0-dev.16
 
-  '@prisma/get-platform@5.15.0':
+  '@prisma/get-platform@5.16.0-dev.16':
     dependencies:
-      '@prisma/debug': 5.15.0
+      '@prisma/debug': 5.16.0-dev.16
 
   '@rollup/rollup-android-arm-eabi@4.18.0':
     optional: true
@@ -1552,11 +1552,11 @@ snapshots:
 
   fastify-plugin@4.5.1: {}
 
-  fastify-type-provider-zod@1.2.0(fastify@4.27.0)(zod@3.23.8):
+  fastify-type-provider-zod@1.2.0(fastify@4.27.0)(zod@3.24.0-canary.20240523T174819):
     dependencies:
       fastify: 4.27.0
-      zod: 3.23.8
-      zod-to-json-schema: 3.23.0(zod@3.23.8)
+      zod: 3.24.0-canary.20240523T174819
+      zod-to-json-schema: 3.23.0(zod@3.24.0-canary.20240523T174819)
 
   fastify@4.27.0:
     dependencies:
@@ -1810,9 +1810,9 @@ snapshots:
       lilconfig: 3.1.1
       yaml: 2.4.3
 
-  prisma@5.15.0:
+  prisma@5.16.0-dev.16:
     dependencies:
-      '@prisma/engines': 5.15.0
+      '@prisma/engines': 5.16.0-dev.16
 
   process-warning@3.0.0: {}
 
@@ -1981,7 +1981,7 @@ snapshots:
 
   ts-interface-checker@0.1.13: {}
 
-  tsup@8.1.0(typescript@5.4.5):
+  tsup@8.1.0(typescript@5.6.0-dev.20240608):
     dependencies:
       bundle-require: 4.2.1(esbuild@0.21.4)
       cac: 6.7.14
@@ -1998,12 +1998,12 @@ snapshots:
       sucrase: 3.35.0
       tree-kill: 1.2.2
     optionalDependencies:
-      typescript: 5.4.5
+      typescript: 5.6.0-dev.20240608
     transitivePeerDependencies:
       - supports-color
       - ts-node
 
-  typescript@5.4.5: {}
+  typescript@5.6.0-dev.20240608: {}
 
   undici-types@5.26.5: {}
 
@@ -2039,8 +2039,8 @@ snapshots:
 
   yaml@2.4.3: {}
 
-  zod-to-json-schema@3.23.0(zod@3.23.8):
+  zod-to-json-schema@3.23.0(zod@3.24.0-canary.20240523T174819):
     dependencies:
-      zod: 3.23.8
+      zod: 3.24.0-canary.20240523T174819
 
-  zod@3.23.8: {}
+  zod@3.24.0-canary.20240523T174819: {}
