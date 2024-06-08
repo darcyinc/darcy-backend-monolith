@@ -1,4 +1,5 @@
 import { db } from '@/helpers/db';
+import { badRequest, noContent, notFound } from '@/helpers/response';
 import type { AppInstance } from '@/index';
 import { enforceAuthorization } from '@/middlewares/enforce-authorization';
 import { getUserByEmail } from '@/services/users';
@@ -22,17 +23,16 @@ export async function likePost(app: AppInstance) {
       if (!authorized) return;
 
       const user = await getUserByEmail(email);
-      if (!user) return reply.status(404).send({ error: 'user_not_found', message: 'User not found.' });
+      if (!user) return notFound(reply, 'user_not_found', 'User not found.');
 
       const post = await db.post.findUnique({
         where: {
           id: params.postId
         }
       });
-      if (!post) return reply.status(404).send({ error: 'post_not_found', message: 'Post not found.' });
 
-      if (post.likedIds.includes(user.id))
-        return reply.status(400).send({ error: 'already_liked', message: 'You already liked this post.' });
+      if (!post) return notFound(reply, 'post_not_found', 'Post not found.');
+      if (post.likedIds.includes(user.id)) return badRequest(reply, 'already_liked', 'You already liked this post.');
 
       await db.post.update({
         where: {
@@ -45,7 +45,7 @@ export async function likePost(app: AppInstance) {
         }
       });
 
-      return reply.status(204).send();
+      return noContent(reply);
     }
   );
 }
@@ -68,16 +68,16 @@ export async function unlikePost(app: AppInstance) {
       if (!authorized) return;
 
       const user = await getUserByEmail(email);
-      if (!user) return reply.status(404).send({ error: 'user_not_found', message: 'User not found.' });
+      if (!user) return notFound(reply, 'user_not_found', 'User not found.');
 
       const post = await db.post.findUnique({
         where: {
           id: params.postId
         }
       });
-      if (!post) return reply.status(404).send({ error: 'post_not_found', message: 'Post not found.' });
 
-      if (!post.likedIds.includes(user.id)) return reply.status(400).send({ error: 'not_liked', message: 'You have not liked this post.' });
+      if (!post) return notFound(reply, 'post_not_found', 'Post not found.');
+      if (!post.likedIds.includes(user.id)) return badRequest(reply, 'not_liked', 'You have not liked this post.');
 
       await db.post.update({
         where: {
@@ -90,7 +90,7 @@ export async function unlikePost(app: AppInstance) {
         }
       });
 
-      return reply.status(204).send();
+      return noContent(reply);
     }
   );
 }

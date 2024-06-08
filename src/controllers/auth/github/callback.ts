@@ -2,6 +2,7 @@ import { db } from '@/helpers/db';
 import { signToken } from '@/helpers/jwt';
 import generateHandleFromEmail from '@/helpers/oauth/generateHandle';
 import { getGithubToken, getGithubUserData } from '@/helpers/oauth/github';
+import { badRequest, ok } from '@/helpers/response';
 import type { AppInstance } from '@/index';
 import { z } from 'zod';
 
@@ -20,12 +21,7 @@ export async function githubCallback(app: AppInstance) {
         const discordToken = await getGithubToken(request.body.code);
         const userData = await getGithubUserData(discordToken);
 
-        if (!userData.email) {
-          return reply.status(400).send({
-            error: 'no_email_associated',
-            message: 'No email associated with account in selected provider'
-          });
-        }
+        if (!userData.email) return badRequest(reply, 'no_email_associated', 'No email associated with account in selected provider');
 
         const userAuth = await db.userAuth.upsert({
           where: {
@@ -47,14 +43,9 @@ export async function githubCallback(app: AppInstance) {
 
         const token = await signToken({ email: userAuth.email, updatedAt: userAuth.updatedAt.getTime() });
 
-        reply.send({
-          token
-        });
+        ok(reply, { token });
       } catch {
-        reply.status(400).send({
-          error: 'invalid_token',
-          message: 'Invalid token'
-        });
+        return badRequest(reply, 'invalid_token', 'Invalid token');
       }
     }
   );

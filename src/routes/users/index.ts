@@ -3,6 +3,7 @@ import type { AppInstance } from '@/index';
 
 export async function userRouter(app: AppInstance) {
   app.register(UsersController.getUser);
+  app.register(UsersController.getSelfUser);
   app.register(UsersController.getUserFollowing);
   app.register(UsersController.getUserFollowers);
   app.register(UsersController.getUserPosts);

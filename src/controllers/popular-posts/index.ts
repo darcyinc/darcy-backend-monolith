@@ -1,5 +1,6 @@
 import { FollowingLimitDto, FollowingPageDto } from '@/dtos/users/following';
 import { db } from '@/helpers/db';
+import { ok } from '@/helpers/response';
 import type { AppInstance } from '@/index';
 import { optionalAuthorization } from '@/middlewares/optional-authorization';
 import type { User } from '@prisma/client';
@@ -58,7 +59,8 @@ export async function getPopularPosts(app: AppInstance) {
         });
       }
 
-      return reply.send(
+      return ok(
+        reply,
         popularPosts
           .sort((a, b) => b.likedIds.length - a.likedIds.length)
           .map((post) => ({

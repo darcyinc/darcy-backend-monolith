@@ -1,4 +1,4 @@
-import { PrismaClientInitializationError } from '@prisma/client/runtime/library';
+import { internalServerError } from '@/helpers/response';
 import { ZodError } from 'zod';
 import type { AppInstance } from '..';
 
@@ -10,14 +10,5 @@ export const validationErrorHandler: AppInstance['errorHandler'] = (error, _requ
     return;
   }
 
-  if (error instanceof PrismaClientInitializationError) {
-    reply.status(500).send({
-      error: 'prisma_client_initialization_error'
-    });
-    return;
-  }
-
-  reply.status(500).send({
-    error: 'Internal Server Error'
-  });
+  return internalServerError(reply);
 };

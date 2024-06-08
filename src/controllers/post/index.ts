@@ -1,5 +1,6 @@
 import { CreatePostDto } from '@/dtos/post';
 import { db } from '@/helpers/db';
+import { created, forbidden, notFound, ok, unauthorized } from '@/helpers/response';
 import type { AppInstance } from '@/index';
 import { enforceAuthorization } from '@/middlewares/enforce-authorization';
 import { optionalAuthorization } from '@/middlewares/optional-authorization';
@@ -42,26 +43,24 @@ export async function getPost(app: AppInstance) {
         }
       });
 
-      if (!post) return reply.status(404).send({ error: 'post_not_found', message: 'Post not found.' });
+      if (!post) {
+        return notFound(reply, 'post_not_found', 'Post not found.');
+      }
 
       if (post.author.private) {
-        if (!authorized)
-          return reply.status(401).send({
-            error: 'Unauthorized'
-          });
-
-        return reply.status(403).send({ error: 'get_post_private', message: 'This post is private. You must follow the user to see it.' });
+        if (!authorized) return unauthorized(reply);
+        return forbidden(reply, 'get_post_private', 'This post is private. You must follow the user to see it.');
       }
 
       let hasLiked = false;
 
       if (authorized) {
         const user = await getUserByEmail(email);
-        if (!user) return reply.status(404).send({ error: 'user_not_found', message: 'User not found.' });
+        if (!user) return notFound(reply, 'user_not_found', 'User not found.');
         hasLiked = post.likedIds.includes(user.id);
       }
 
-      return reply.status(200).send({
+      return ok(reply, {
         ...post,
         commentCount: post.comments.length,
         authorId: undefined,
@@ -89,7 +88,7 @@ export async function createPost(app: AppInstance) {
       if (!authorized) return;
 
       const user = await getUserByEmail(email);
-      if (!user) return reply.status(404).send({ error: 'user_not_found', message: 'User not found.' });
+      if (!user) return notFound(reply, 'user_not_found', 'User not found.');
 
       const parentPostId = body.parentId;
 
@@ -100,9 +99,7 @@ export async function createPost(app: AppInstance) {
           }
         });
 
-        if (!parentPost) {
-          return reply.status(404).send({ error: 'parent_post_not_found', message: 'Parent post not found.' });
-        }
+        if (!parentPost) return notFound(reply, 'parent_post_not_found', 'Parent post not found.');
       }
 
       const post = await db.post.create({
@@ -124,7 +121,7 @@ export async function createPost(app: AppInstance) {
         }
       });
 
-      return reply.status(201).send({
+      return created(reply, {
         ...post,
         commentCount: post.comments.length,
         likedIds: undefined,
