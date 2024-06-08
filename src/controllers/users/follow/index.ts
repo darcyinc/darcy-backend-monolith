@@ -23,13 +23,12 @@ export async function followUser(app: AppInstance) {
       if (!authorized) return;
 
       const [user, userToFollow] = await Promise.all([getUserByEmail(email), getUserByHandle(params.handle)]);
-      if (!user || !userToFollow) return notFound({ reply });
+      if (!user || !userToFollow) return notFound(reply);
 
-      if (user.handle === userToFollow.handle)
-        return badRequest({ reply, data: { error: 'cannot_follow_yourself', message: "You can't follow yourself." } });
+      if (user.handle === userToFollow.handle) return badRequest(reply, 'cannot_follow_yourself', "You can't follow yourself.");
 
       if (user.followingIds.includes(userToFollow.id))
-        return badRequest({ reply, data: { error: 'already_following', message: 'You are already following this user.' } });
+        return badRequest(reply, 'already_following', 'You are already following this user.');
 
       await db.user.update({
         where: {
@@ -42,7 +41,7 @@ export async function followUser(app: AppInstance) {
         }
       });
 
-      return created({ reply });
+      return created(reply);
     }
   );
 }
@@ -65,13 +64,11 @@ export async function unfollowUser(app: AppInstance) {
       if (!authorized) return;
 
       const [user, userToUnfollow] = await Promise.all([getUserByEmail(email), getUserByHandle(params.handle)]);
-      if (!user || !userToUnfollow) return notFound({ reply });
+      if (!user || !userToUnfollow) return notFound(reply);
 
-      if (user.handle === userToUnfollow.handle)
-        return badRequest({ reply, data: { error: 'cannot_unfollow_yourself', message: "You can't unfollow yourself." } });
+      if (user.handle === userToUnfollow.handle) return badRequest(reply, 'cannot_unfollow_yourself', "You can't unfollow yourself.");
 
-      if (!user.followingIds.includes(userToUnfollow.id))
-        return badRequest({ reply, data: { error: 'not_following', message: 'You are not following this user.' } });
+      if (!user.followingIds.includes(userToUnfollow.id)) return badRequest(reply, 'not_following', 'You are not following this user.');
 
       await db.user.update({
         where: {
@@ -84,7 +81,7 @@ export async function unfollowUser(app: AppInstance) {
         }
       });
 
-      return created({ reply });
+      return created(reply);
     }
   );
 }

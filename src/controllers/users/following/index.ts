@@ -30,17 +30,17 @@ export async function getUserFollowing(app: AppInstance) {
       let user: User | null = null;
 
       if (params.handle === '@me') {
-        if (!authorized) return unauthorized({ reply });
+        if (!authorized) return unauthorized(reply);
 
         user = await getUserByEmail(email);
-        if (!user) return notFound({ reply });
+        if (!user) return notFound(reply);
       }
 
       user ??= await getUserByHandle(params.handle);
-      if (!user) return notFound({ reply });
+      if (!user) return notFound(reply);
 
       // TODO: handle private accounts
-      if (user.private) return unauthorized({ reply });
+      if (user.private) return unauthorized(reply);
 
       const following = await db.user.findMany({
         where: {
@@ -52,15 +52,15 @@ export async function getUserFollowing(app: AppInstance) {
         skip: (page - 1) * limit
       });
 
-      return ok({
+      return ok(
         reply,
-        data: following.map((user) => ({
+        following.map((user) => ({
           avatarUrl: user.avatarUrl,
           bio: user.bio,
           displayName: user.displayName,
           handle: user.handle
         }))
-      });
+      );
     }
   );
 }

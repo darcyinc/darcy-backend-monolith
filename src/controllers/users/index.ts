@@ -23,7 +23,7 @@ export async function getSelfUser(app: AppInstance) {
       if (!authorized) return;
 
       const user = await getUserByEmail(email);
-      if (!user) return notFound({ reply });
+      if (!user) return notFound(reply);
 
       const followersCount = await db.user.count({
         where: {
@@ -33,7 +33,7 @@ export async function getSelfUser(app: AppInstance) {
         }
       });
 
-      return reply.send({
+      return ok(reply, {
         ...user,
         followersCount,
         followingCount: user.followingIds.length,
@@ -59,7 +59,7 @@ export async function getUser(app: AppInstance) {
       const { authorized, email } = request.authorization;
 
       const user = await getUserByHandle(request.params.handle);
-      if (!user) return notFound({ reply });
+      if (!user) return notFound(reply);
 
       // get follower count and check if current user follows target user
       const [currentUser, followersCount] = await Promise.all([
@@ -77,17 +77,14 @@ export async function getUser(app: AppInstance) {
         })
       ]);
 
-      return ok({
-        reply,
-        data: {
-          ...user,
-          followersCount,
-          followingCount: user.followingIds.length,
-          isFollowing: currentUser?.followingIds.includes(user.id) ?? false,
-          onboardingComplete: undefined,
-          followingIds: undefined,
-          id: undefined
-        }
+      return ok(reply, {
+        ...user,
+        followersCount,
+        followingCount: user.followingIds.length,
+        isFollowing: currentUser?.followingIds.includes(user.id) ?? false,
+        onboardingComplete: undefined,
+        followingIds: undefined,
+        id: undefined
       });
     }
   );
@@ -111,18 +108,18 @@ export async function editUser(app: AppInstance) {
 
       const data = request.body;
       const user = await getUserByEmail(request.authorization.email);
-      if (!user) return notFound({ reply });
+      if (!user) return notFound(reply);
 
       if (data.completedOnboarding === false) {
         if (user.completedOnboarding) {
-          return badRequest({ reply, data: { error: 'onboarding_already_completed', message: 'User has already completed onboarding.' } });
+          return badRequest(reply, 'onboarding_already_completed', 'User has already completed onboarding.');
         }
       }
 
       if (data.handle) {
         const handleExists = await getUserByHandle(data.handle);
         if (handleExists && handleExists.id !== user.id) {
-          return badRequest({ reply, data: { error: 'handle_already_user', message: 'Handle is being used by another user.' } });
+          return badRequest(reply, 'handle_already_user', 'Handle is being used by another user.');
         }
       }
 
@@ -145,10 +142,7 @@ export async function editUser(app: AppInstance) {
         })
       ]);
 
-      return ok({
-        reply,
-        data: { ...newUser, followersCount, followingCount: user.followingIds.length, followingIds: undefined, id: undefined }
-      });
+      return ok(reply, { ...newUser, followersCount, followingCount: user.followingIds.length, followingIds: undefined, id: undefined });
     }
   );
 }

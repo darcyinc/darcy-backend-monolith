@@ -33,19 +33,19 @@ export async function getUserPosts(app: AppInstance) {
       let userWhoRequested: User | null = null;
 
       if (params.handle === '@me') {
-        if (!authorized) return unauthorized({ reply });
+        if (!authorized) return unauthorized(reply);
 
         user = await getUserByEmail(email);
         userWhoRequested = user;
-        if (!user) return notFound({ reply });
+        if (!user) return notFound(reply);
       }
 
       user ??= await getUserByHandle(params.handle);
-      if (!user) return notFound({ reply });
+      if (!user) return notFound(reply);
 
       if (user.private) {
         // TODO: implement private user profile
-        return notFound({ reply });
+        return notFound(reply);
       }
 
       const { posts } = await db.user.findFirstOrThrow({
@@ -71,9 +71,9 @@ export async function getUserPosts(app: AppInstance) {
         }
       });
 
-      return ok({
+      return ok(
         reply,
-        data: posts.map((post) => ({
+        posts.map((post) => ({
           ...post,
           authorId: undefined,
           commentCount: post.comments.length,
@@ -81,7 +81,7 @@ export async function getUserPosts(app: AppInstance) {
           likeCount: post.likedIds.length,
           hasLiked: userWhoRequested ? post.likedIds.includes(userWhoRequested.id) : false
         }))
-      });
+      );
     }
   );
 }

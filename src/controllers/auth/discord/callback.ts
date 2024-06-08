@@ -2,6 +2,7 @@ import { db } from '@/helpers/db';
 import { signToken } from '@/helpers/jwt';
 import { getDiscordToken, getDiscordUserData } from '@/helpers/oauth/discord';
 import generateHandleFromEmail from '@/helpers/oauth/generateHandle';
+import { badRequest, ok } from '@/helpers/response';
 import type { AppInstance } from '@/index';
 import { z } from 'zod';
 
@@ -21,10 +22,7 @@ export async function discordCallback(app: AppInstance) {
         const userData = await getDiscordUserData(discordToken);
 
         if (!userData.email || !userData.verified) {
-          return reply.status(400).send({
-            error: 'no_email_associated',
-            message: 'No email associated with account in selected provider'
-          });
+          return badRequest(reply, 'no_email_associated', 'No email associated with account in selected provider');
         }
 
         const userAuth = await db.userAuth.upsert({
@@ -45,14 +43,9 @@ export async function discordCallback(app: AppInstance) {
 
         const token = await signToken({ email: userAuth.email, updatedAt: userAuth.updatedAt.getTime() });
 
-        reply.send({
-          token
-        });
+        ok(reply, { token });
       } catch {
-        reply.status(400).send({
-          error: 'invalid_token',
-          message: 'Invalid token'
-        });
+        return badRequest(reply, 'invalid_token', 'Invalid token');
       }
     }
   );
