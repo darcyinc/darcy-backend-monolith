@@ -13,7 +13,7 @@ importers:
         version: 9.0.1
       '@prisma/client':
         specifier: ^5.15.0
-        version: 5.15.0(prisma@5.16.0-integration-engines-5-16-0-1-fix-sqlite-concurrent-writes-74a48e9f33b0a8b403045af35430ce444541be88.1)
+        version: 5.15.0(prisma@5.16.0-integration-fix-empty-schema.1)
       fastify:
         specifier: ^4.26.2
         version: 4.27.0
@@ -37,8 +37,8 @@ importers:
         specifier: ^9.0.11
         version: 9.0.11
       prisma:
-        specifier: 5.16.0-integration-engines-5-16-0-1-fix-sqlite-concurrent-writes-74a48e9f33b0a8b403045af35430ce444541be88.1
-        version: 5.16.0-integration-engines-5-16-0-1-fix-sqlite-concurrent-writes-74a48e9f33b0a8b403045af35430ce444541be88.1
+        specifier: 5.16.0-integration-fix-empty-schema.1
+        version: 5.16.0-integration-fix-empty-schema.1
       tsup:
         specifier: ^8.0.2
         version: 8.1.0(typescript@5.6.0-dev.20240609)
@@ -304,20 +304,20 @@ packages:
       prisma:
         optional: true
 
-  '@prisma/debug@5.16.0-integration-engines-5-16-0-1-fix-sqlite-concurrent-writes-74a48e9f33b0a8b403045af35430ce444541be88.1':
-    resolution: {integrity: sha512-Ddm83vYBxNAKjoajSiCsJM90p47xMzyrg588s1I36h0iWmu6iUWYX0ivm7LkUKm15y6NDrcXT1VN1jOWpo4msw==}
+  '@prisma/debug@5.16.0-integration-fix-empty-schema.1':
+    resolution: {integrity: sha512-ALDcKqrsNlY4gPi7fNgfRz17zQO/8TaOhkwqQiuycnqxNvCMLUXNqBtFWPx2AuxH3BXwe7rtj0uvWqhWggp2wQ==}
 
-  '@prisma/engines-version@5.16.0-1.fix-sqlite-concurrent-writes-74a48e9f33b0a8b403045af35430ce444541be88':
-    resolution: {integrity: sha512-ckeXeY05B2MVCIm+bQu2k6FsanuZGINkjTOaydh2spUhlDYObBjJyTZq6yqJVgeW36L06fDpezzGnJw1WN9HWQ==}
+  '@prisma/engines-version@5.16.0-3.9ee8c029573a3ce47bd5f103da9feaf8b6f62c53':
+    resolution: {integrity: sha512-1W5RMJTDGflOzuG80eBIq05+zA7PNmtyRMh+CxtXRTxSn2crTKMehZh1aSXseIWgR8yEmZR2uzba5II/2hjMmg==}
 
-  '@prisma/engines@5.16.0-integration-engines-5-16-0-1-fix-sqlite-concurrent-writes-74a48e9f33b0a8b403045af35430ce444541be88.1':
-    resolution: {integrity: sha512-AEYcTjPZlY1gqr8mprwjDkvCIke0u480D9Wx5TYmaVDfHElOCk6Cq/gtEQhgVLwMiGTukVXQ0S59qt0HhJmTRA==}
+  '@prisma/engines@5.16.0-integration-fix-empty-schema.1':
+    resolution: {integrity: sha512-/ahDgvi+H6jjaxeG5aGKipslBwRyTCnX6QbH5qEGWp6jZkOLuWF2bkNC57hmLuJmNK4kt1IztDmmc6qNK90nDA==}
 
-  '@prisma/fetch-engine@5.16.0-integration-engines-5-16-0-1-fix-sqlite-concurrent-writes-74a48e9f33b0a8b403045af35430ce444541be88.1':
-    resolution: {integrity: sha512-g/f8Ixnd2GEHweoQhMkYZE5sJLBG5/vDhOOSI9DCrKF/Zsx4TRcWDfsMtNYbd0Y+TCf+lGWVWfWrRg+QE+zMQw==}
+  '@prisma/fetch-engine@5.16.0-integration-fix-empty-schema.1':
+    resolution: {integrity: sha512-vO/e3W6j99bhl6i5oJkkvwkBeVOXxjTAgtUB0CfrxI+hKiuCWWQdeBxT7XQibp+fGpGOv8J7oQzNlumEAw3i3Q==}
 
-  '@prisma/get-platform@5.16.0-integration-engines-5-16-0-1-fix-sqlite-concurrent-writes-74a48e9f33b0a8b403045af35430ce444541be88.1':
-    resolution: {integrity: sha512-07n4zIPMNMNOLOEf3kkwN2BEY2AuJzZAAXYOej35PA8v/HyEmBOke+tSLOLXcxiyFkTYwyxQQpfI+lveo9q90A==}
+  '@prisma/get-platform@5.16.0-integration-fix-empty-schema.1':
+    resolution: {integrity: sha512-sXpLJXGJMlsHhgE3zbmW9omiKKzcNow45fRpBIjAQQnMLud3FZ8GuSw01VR6l/O8MrVB0D28m14mFHSjqRm+PA==}
 
   '@rollup/rollup-android-arm-eabi@4.18.0':
     resolution: {integrity: sha512-Tya6xypR10giZV1XzxmH5wr25VcZSncG0pZIjfePT0OVBvqNEurzValetGNarVrGiq66EBVAFn15iYX4w6FKgQ==}
@@ -862,8 +862,8 @@ packages:
       ts-node:
         optional: true
 
-  prisma@5.16.0-integration-engines-5-16-0-1-fix-sqlite-concurrent-writes-74a48e9f33b0a8b403045af35430ce444541be88.1:
-    resolution: {integrity: sha512-XElqzZUfTbAi3PgsjeKy+1psIQYYQdmsRyuZSqZCzkZ10fmvFztjuzQkpKP1HuT9uwz83PZ2sss+Qu87IWFlng==}
+  prisma@5.16.0-integration-fix-empty-schema.1:
+    resolution: {integrity: sha512-zuOt4zu+D71Q3keW/OSsdWdwU2vGxlM/0knea3Ympmq2k7vlbiHYzhxmFAuxejpEyuIUdLYISEgIqXD965qXqg==}
     engines: {node: '>=16.13'}
     hasBin: true
 
@@ -1272,30 +1272,30 @@ snapshots:
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
-  '@prisma/client@5.15.0(prisma@5.16.0-integration-engines-5-16-0-1-fix-sqlite-concurrent-writes-74a48e9f33b0a8b403045af35430ce444541be88.1)':
+  '@prisma/client@5.15.0(prisma@5.16.0-integration-fix-empty-schema.1)':
     optionalDependencies:
-      prisma: 5.16.0-integration-engines-5-16-0-1-fix-sqlite-concurrent-writes-74a48e9f33b0a8b403045af35430ce444541be88.1
+      prisma: 5.16.0-integration-fix-empty-schema.1
 
-  '@prisma/debug@5.16.0-integration-engines-5-16-0-1-fix-sqlite-concurrent-writes-74a48e9f33b0a8b403045af35430ce444541be88.1': {}
+  '@prisma/debug@5.16.0-integration-fix-empty-schema.1': {}
 
-  '@prisma/engines-version@5.16.0-1.fix-sqlite-concurrent-writes-74a48e9f33b0a8b403045af35430ce444541be88': {}
+  '@prisma/engines-version@5.16.0-3.9ee8c029573a3ce47bd5f103da9feaf8b6f62c53': {}
 
-  '@prisma/engines@5.16.0-integration-engines-5-16-0-1-fix-sqlite-concurrent-writes-74a48e9f33b0a8b403045af35430ce444541be88.1':
+  '@prisma/engines@5.16.0-integration-fix-empty-schema.1':
     dependencies:
-      '@prisma/debug': 5.16.0-integration-engines-5-16-0-1-fix-sqlite-concurrent-writes-74a48e9f33b0a8b403045af35430ce444541be88.1
-      '@prisma/engines-version': 5.16.0-1.fix-sqlite-concurrent-writes-74a48e9f33b0a8b403045af35430ce444541be88
-      '@prisma/fetch-engine': 5.16.0-integration-engines-5-16-0-1-fix-sqlite-concurrent-writes-74a48e9f33b0a8b403045af35430ce444541be88.1
-      '@prisma/get-platform': 5.16.0-integration-engines-5-16-0-1-fix-sqlite-concurrent-writes-74a48e9f33b0a8b403045af35430ce444541be88.1
+      '@prisma/debug': 5.16.0-integration-fix-empty-schema.1
+      '@prisma/engines-version': 5.16.0-3.9ee8c029573a3ce47bd5f103da9feaf8b6f62c53
+      '@prisma/fetch-engine': 5.16.0-integration-fix-empty-schema.1
+      '@prisma/get-platform': 5.16.0-integration-fix-empty-schema.1
 
-  '@prisma/fetch-engine@5.16.0-integration-engines-5-16-0-1-fix-sqlite-concurrent-writes-74a48e9f33b0a8b403045af35430ce444541be88.1':
+  '@prisma/fetch-engine@5.16.0-integration-fix-empty-schema.1':
     dependencies:
-      '@prisma/debug': 5.16.0-integration-engines-5-16-0-1-fix-sqlite-concurrent-writes-74a48e9f33b0a8b403045af35430ce444541be88.1
-      '@prisma/engines-version': 5.16.0-1.fix-sqlite-concurrent-writes-74a48e9f33b0a8b403045af35430ce444541be88
-      '@prisma/get-platform': 5.16.0-integration-engines-5-16-0-1-fix-sqlite-concurrent-writes-74a48e9f33b0a8b403045af35430ce444541be88.1
+      '@prisma/debug': 5.16.0-integration-fix-empty-schema.1
+      '@prisma/engines-version': 5.16.0-3.9ee8c029573a3ce47bd5f103da9feaf8b6f62c53
+      '@prisma/get-platform': 5.16.0-integration-fix-empty-schema.1
 
-  '@prisma/get-platform@5.16.0-integration-engines-5-16-0-1-fix-sqlite-concurrent-writes-74a48e9f33b0a8b403045af35430ce444541be88.1':
+  '@prisma/get-platform@5.16.0-integration-fix-empty-schema.1':
     dependencies:
-      '@prisma/debug': 5.16.0-integration-engines-5-16-0-1-fix-sqlite-concurrent-writes-74a48e9f33b0a8b403045af35430ce444541be88.1
+      '@prisma/debug': 5.16.0-integration-fix-empty-schema.1
 
   '@rollup/rollup-android-arm-eabi@4.18.0':
     optional: true
@@ -1810,9 +1810,9 @@ snapshots:
       lilconfig: 3.1.1
       yaml: 2.4.3
 
-  prisma@5.16.0-integration-engines-5-16-0-1-fix-sqlite-concurrent-writes-74a48e9f33b0a8b403045af35430ce444541be88.1:
+  prisma@5.16.0-integration-fix-empty-schema.1:
     dependencies:
-      '@prisma/engines': 5.16.0-integration-engines-5-16-0-1-fix-sqlite-concurrent-writes-74a48e9f33b0a8b403045af35430ce444541be88.1
+      '@prisma/engines': 5.16.0-integration-fix-empty-schema.1
 
   process-warning@3.0.0: {}
 
