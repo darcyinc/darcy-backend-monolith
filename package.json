@@ -26,7 +26,7 @@
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20.12.7",
     "husky": "^9.0.11",
-    "prisma": "5.16.0-integration-fix-empty-schema.1",
+    "prisma": "5.16.0-integration-sqlite-fix.1",
     "tsup": "^8.0.2",
     "typescript": "5.6.0-dev.20240611",
     "zod": "3.24.0-canary.20240523T174819"
