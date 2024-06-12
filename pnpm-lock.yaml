@@ -41,10 +41,10 @@ importers:
         version: 5.16.0-integration-sqlite-fix.1
       tsup:
         specifier: ^8.0.2
-        version: 8.1.0(typescript@5.6.0-dev.20240611)
+        version: 8.1.0(typescript@5.6.0-dev.20240612)
       typescript:
-        specifier: 5.6.0-dev.20240611
-        version: 5.6.0-dev.20240611
+        specifier: 5.6.0-dev.20240612
+        version: 5.6.0-dev.20240612
       zod:
         specifier: 3.24.0-canary.20240523T174819
         version: 3.24.0-canary.20240523T174819
@@ -1058,8 +1058,8 @@ packages:
       typescript:
         optional: true
 
-  typescript@5.6.0-dev.20240611:
-    resolution: {integrity: sha512-++hW2N7TUgGGnZpBmMth4rllhssaj9MPUO5KBRr0qrVZcTlwHJrweKfMZP4X6g/0PiCssvXuEgBxhE6fuVZm7g==}
+  typescript@5.6.0-dev.20240612:
+    resolution: {integrity: sha512-C5WDxLlEMZhdyZBkhZkysctw9uOpGnua48Zrq0FxJLx6+tFrNkanXn4Zhatjg1vbKjzk19FYggX4Gc6Wgz5flg==}
     engines: {node: '>=14.17'}
     hasBin: true
 
@@ -1981,7 +1981,7 @@ snapshots:
 
   ts-interface-checker@0.1.13: {}
 
-  tsup@8.1.0(typescript@5.6.0-dev.20240611):
+  tsup@8.1.0(typescript@5.6.0-dev.20240612):
     dependencies:
       bundle-require: 4.2.1(esbuild@0.21.4)
       cac: 6.7.14
@@ -1998,12 +1998,12 @@ snapshots:
       sucrase: 3.35.0
       tree-kill: 1.2.2
     optionalDependencies:
-      typescript: 5.6.0-dev.20240611
+      typescript: 5.6.0-dev.20240612
     transitivePeerDependencies:
       - supports-color
       - ts-node
 
-  typescript@5.6.0-dev.20240611: {}
+  typescript@5.6.0-dev.20240612: {}
 
   undici-types@5.26.5: {}
 
