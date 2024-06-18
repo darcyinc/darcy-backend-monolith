@@ -42,19 +42,25 @@ export async function getUserFollowing(app: AppInstance) {
       // TODO: handle private accounts
       if (user.private) return unauthorized(reply);
 
-      const following = await db.user.findMany({
+      const followingIds = await db.userFollow.findMany({
         where: {
-          id: {
-            in: user.followingIds
-          }
+          followerId: user.id
         },
         take: limit,
         skip: (page - 1) * limit
       });
 
+      const followedUsers = await db.user.findMany({
+        where: {
+          id: {
+            in: followingIds.map((following) => following.followingId)
+          }
+        }
+      });
+
       return ok(
         reply,
-        following.map((user) => ({
+        followedUsers.map((user) => ({
           avatarUrl: user.avatarUrl,
           bio: user.bio,
           displayName: user.displayName,

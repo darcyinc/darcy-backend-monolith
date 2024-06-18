@@ -39,19 +39,25 @@ export async function getUserFollowers(app: AppInstance) {
       user ??= await getUserByHandle(params.handle);
       if (!user) return notFound(reply);
 
-      const followers = await db.user.findMany({
+      const followersIds = await db.userFollow.findMany({
         where: {
-          followingIds: {
-            has: user.id
-          }
+          followingId: user.id
         },
         take: limit,
         skip: (page - 1) * limit
       });
 
+      const usersFollowing = await db.user.findMany({
+        where: {
+          id: {
+            in: followersIds.map((following) => following.followingId)
+          }
+        }
+      });
+
       return ok(
         reply,
-        followers.map((user) => ({
+        usersFollowing.map((user) => ({
           avatarUrl: user.avatarUrl,
           bio: user.bio,
           displayName: user.displayName,

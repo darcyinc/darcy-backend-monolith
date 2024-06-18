@@ -27,19 +27,47 @@ export async function followUser(app: AppInstance) {
 
       if (user.handle === userToFollow.handle) return badRequest(reply, 'cannot_follow_yourself', "You can't follow yourself.");
 
-      if (user.followingIds.includes(userToFollow.id))
-        return badRequest(reply, 'already_following', 'You are already following this user.');
-
-      await db.user.update({
+      const isAlreadyFollowing = await db.userFollow.findUnique({
         where: {
-          handle: user.handle
-        },
-        data: {
-          followingIds: {
-            push: userToFollow.id
+          followerId_followingId: {
+            followerId: user.id,
+            followingId: userToFollow.id
           }
         }
       });
+
+      if (isAlreadyFollowing) return badRequest(reply, 'already_following', 'You are already following this user.');
+
+      await Promise.all([
+        db.userFollow.create({
+          data: {
+            followerId: user.id,
+            followingId: userToFollow.id
+          }
+        }),
+
+        db.user.update({
+          where: {
+            handle: user.handle
+          },
+          data: {
+            followingCount: {
+              increment: 1
+            }
+          }
+        }),
+
+        db.user.update({
+          where: {
+            handle: userToFollow.handle
+          },
+          data: {
+            followingCount: {
+              increment: 1
+            }
+          }
+        })
+      ]);
 
       return created(reply);
     }
@@ -68,18 +96,49 @@ export async function unfollowUser(app: AppInstance) {
 
       if (user.handle === userToUnfollow.handle) return badRequest(reply, 'cannot_unfollow_yourself', "You can't unfollow yourself.");
 
-      if (!user.followingIds.includes(userToUnfollow.id)) return badRequest(reply, 'not_following', 'You are not following this user.');
-
-      await db.user.update({
+      const isAlreadyFollowing = await db.userFollow.findUnique({
         where: {
-          handle: user.handle
-        },
-        data: {
-          followingIds: {
-            set: user.followingIds.filter((id) => id !== userToUnfollow.id)
+          followerId_followingId: {
+            followerId: user.id,
+            followingId: userToUnfollow.id
           }
         }
       });
+
+      if (!isAlreadyFollowing) return badRequest(reply, 'not_following', 'You are not following this user.');
+
+      await Promise.all([
+        db.userFollow.delete({
+          where: {
+            followerId_followingId: {
+              followerId: user.id,
+              followingId: userToUnfollow.id
+            }
+          }
+        }),
+
+        db.user.update({
+          where: {
+            handle: user.handle
+          },
+          data: {
+            followingCount: {
+              decrement: 1
+            }
+          }
+        }),
+
+        db.user.update({
+          where: {
+            handle: userToUnfollow.handle
+          },
+          data: {
+            followingCount: {
+              decrement: 1
+            }
+          }
+        })
+      ]);
 
       return created(reply);
     }

@@ -5,6 +5,7 @@ import type { AppInstance } from '@/index';
 import { enforceAuthorization } from '@/middlewares/enforce-authorization';
 import { optionalAuthorization } from '@/middlewares/optional-authorization';
 import { getUserByEmail, getUserByHandle } from '@/services/users';
+import type { UserFollow } from '@prisma/client';
 import { z } from 'zod';
 
 export * from './follow';
@@ -25,19 +26,8 @@ export async function getSelfUser(app: AppInstance) {
       const user = await getUserByEmail(email);
       if (!user) return notFound(reply);
 
-      const followersCount = await db.user.count({
-        where: {
-          followingIds: {
-            has: user.id
-          }
-        }
-      });
-
       return ok(reply, {
         ...user,
-        followersCount,
-        followingCount: user.followingIds.length,
-        followingIds: undefined,
         id: undefined
       });
     }
@@ -56,34 +46,31 @@ export async function getUser(app: AppInstance) {
       }
     },
     async (request, reply) => {
-      const { authorized, email } = request.authorization;
+      const { email } = request.authorization;
 
       const user = await getUserByHandle(request.params.handle);
       if (!user) return notFound(reply);
 
       // get follower count and check if current user follows target user
-      const [currentUser, followersCount] = await Promise.all([
-        authorized
-          ? db.user.findFirst({
-              where: { auth: { email: email } }
-            })
-          : null,
-        db.user.count({
+      const currentUser = await db.user.findFirst({
+        where: { auth: { email: email } }
+      });
+
+      let isFollowing: UserFollow | null = null;
+
+      if (currentUser) {
+        isFollowing = await db.userFollow.findFirst({
           where: {
-            followingIds: {
-              has: user.id
-            }
+            followerId: user.id,
+            followingId: currentUser.id
           }
-        })
-      ]);
+        });
+      }
 
       return ok(reply, {
         ...user,
-        followersCount,
-        followingCount: user.followingIds.length,
-        isFollowing: currentUser?.followingIds.includes(user.id) ?? false,
+        isFollowing: Boolean(isFollowing),
         onboardingComplete: undefined,
-        followingIds: undefined,
         id: undefined
       });
     }
@@ -123,26 +110,17 @@ export async function editUser(app: AppInstance) {
         }
       }
 
-      const [newUser, followersCount] = await Promise.all([
-        db.user.update({
-          where: { id: user.id },
-          data: {
-            displayName: data.displayName || user.displayName,
-            handle: data.handle || user.handle,
-            bio: data.bio || user.bio,
-            completedOnboarding: data.completedOnboarding || user.completedOnboarding
-          }
-        }),
-        db.user.count({
-          where: {
-            followingIds: {
-              has: user.id
-            }
-          }
-        })
-      ]);
+      const newUser = await db.user.update({
+        where: { id: user.id },
+        data: {
+          displayName: data.displayName || user.displayName,
+          handle: data.handle || user.handle,
+          bio: data.bio || user.bio,
+          completedOnboarding: data.completedOnboarding || user.completedOnboarding
+        }
+      });
 
-      return ok(reply, { ...newUser, followersCount, followingCount: user.followingIds.length, followingIds: undefined, id: undefined });
+      return ok(reply, { ...newUser, id: undefined });
     }
   );
 }

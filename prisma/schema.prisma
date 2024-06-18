@@ -32,9 +32,6 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // An array of user ids that this user follows
-  followingIds String[]
-
   // Define the relationships with other models
   posts Post[]    @relation("Author")
   auth  UserAuth?
@@ -45,8 +42,13 @@ model User {
   jobTitle   String?
   birthday   DateTime?
 
-  // Define the counts
+  // Define counts
   postCount Int @default(0)
+  followingCount Int @default(0)
+  followersCount Int @default(0)
+
+  UserFollowing     UserFollow[] @relation("UserFollowing") @ignore
+  UserBeingFollowed UserFollow[] @relation("UserBeingFollowed") @ignore
 }
 
 // Define the UserAuth schema
@@ -58,6 +60,19 @@ model UserAuth {
 
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
+}
+
+// Define the UserFollow schema
+model UserFollow {
+  follower    User?  @relation("UserFollowing", fields: [followerId], references: [id])
+  followerId  String
+  following   User?  @relation("UserBeingFollowed", fields: [followingId], references: [id])
+  followingId String
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  @@unique([followerId, followingId])
 }
 
 // Define the Post schema
