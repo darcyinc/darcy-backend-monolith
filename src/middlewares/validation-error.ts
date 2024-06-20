@@ -10,5 +10,7 @@ export const validationErrorHandler: AppInstance['errorHandler'] = (error, _requ
     return;
   }
 
+  console.log(error)
+
   return internalServerError(reply);
 };

@@ -12,9 +12,6 @@ export async function getPopularPosts(app: AppInstance) {
     {
       onRequest: [optionalAuthorization] as never,
       schema: {
-        params: z.object({
-          postId: z.string()
-        }),
         querystring: z.object({
           page: FollowingPageDto,
           limit: FollowingLimitDto

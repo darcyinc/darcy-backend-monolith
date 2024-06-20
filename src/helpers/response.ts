@@ -29,6 +29,8 @@ export const conflict = (reply: FastifyReply, errorId?: string, errorMessage?: s
 
   if (errorId && errorMessage)
     return reply.send({
+      success: false,
+      statusCode: 409,
       error: {
         id: errorId,
         message: errorMessage,
