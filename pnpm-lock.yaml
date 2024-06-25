@@ -12,8 +12,8 @@ importers:
         specifier: ^9.0.1
         version: 9.0.1
       '@prisma/client':
-        specifier: 5.16.0-integration-vitest-workaround.1
-        version: 5.16.0-integration-vitest-workaround.1(prisma@5.16.0-integration-vitest-workaround.1)
+        specifier: 5.16.0-integration-vitest-workaround.2
+        version: 5.16.0-integration-vitest-workaround.2(prisma@5.16.0-integration-vitest-workaround.2)
       fastify:
         specifier: ^4.28.0
         version: 4.28.0
@@ -37,8 +37,8 @@ importers:
         specifier: ^9.0.11
         version: 9.0.11
       prisma:
-        specifier: 5.16.0-integration-vitest-workaround.1
-        version: 5.16.0-integration-vitest-workaround.1
+        specifier: 5.16.0-integration-vitest-workaround.2
+        version: 5.16.0-integration-vitest-workaround.2
       tsup:
         specifier: ^8.1.0
         version: 8.1.0(typescript@5.6.0-dev.20240625)
@@ -295,8 +295,8 @@ packages:
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
 
-  '@prisma/client@5.16.0-integration-vitest-workaround.1':
-    resolution: {integrity: sha512-YxodLa/yFy/O6N1PSfATVrK3dNyWqwhQnC/NV3mVpIWSGxlfwYsNyw1SnSqqVhIBsGEcbHeeakCauQdVdLCsPw==}
+  '@prisma/client@5.16.0-integration-vitest-workaround.2':
+    resolution: {integrity: sha512-yCGKsOcBiTDvPsDoDHT5k3s6ZCXlUliBHJ28ADR4U6MsBSWRjlOJQtFb1uAIetY4lZW2J9AojhBAH3/Ug83gGg==}
     engines: {node: '>=16.13'}
     peerDependencies:
       prisma: '*'
@@ -304,20 +304,20 @@ packages:
       prisma:
         optional: true
 
-  '@prisma/debug@5.16.0-integration-vitest-workaround.1':
-    resolution: {integrity: sha512-kcsuxPfunMnbpD9R6kfP/D9XxJXj8YnrhXFa6jvb7j0K51IEp49iPFvR1l+7Vs9r2fjOzMZ21YOdxs2neKQApw==}
+  '@prisma/debug@5.16.0-integration-vitest-workaround.2':
+    resolution: {integrity: sha512-5i5gfxYTPNZFqKGnBcZg4JysGVJvazjuMb91pX4BgbWyzmrlafk3qJ4vsG8C3zoHCx2uIMYZVj8cn18LBa/VBg==}
 
-  '@prisma/engines-version@5.16.0-10.e974ca8eb70e4bad2b8a038ff3eaa4109ba7fd58':
-    resolution: {integrity: sha512-Avo4RsMayHacXGFLFUbiJrbh0bOt2U6H3rTzIHLt5UkkXLuypc9tXrbkeAOjd5pZLsAEuUSfJqq5Z9dnyQYIYg==}
+  '@prisma/engines-version@5.16.0-23.d56fe2ee624826f693e591a3035694073d17f473':
+    resolution: {integrity: sha512-JY+/rUAoq66sakA9Aeh8DWm8PhdsPmjOzNuTU71ETjqftIvzDxbJWTwhW1zVVUpoB3nlRNldEyH5PvLygE6DHw==}
 
-  '@prisma/engines@5.16.0-integration-vitest-workaround.1':
-    resolution: {integrity: sha512-V34b1ZtAWRbSPGoxq8CzhXVR1NIQa5TM4u2zEW9UAfGXdGRTs6aWpufVFfZ8clQMXZHqb+gfngHwvXTjCWeTKA==}
+  '@prisma/engines@5.16.0-integration-vitest-workaround.2':
+    resolution: {integrity: sha512-DnDO5gYRa9AK3RvsQ8p3tX27atKXd0gJ/+Cd0IwsV8pY6JoapRLHG6isf1A8XChDTS8MURnS3/vcRZD78ippUQ==}
 
-  '@prisma/fetch-engine@5.16.0-integration-vitest-workaround.1':
-    resolution: {integrity: sha512-dK2MBC2qIosnuwhHtq4Fa7LIBus7GcC9HUwX+vbu/WBvUurEr7KO9w3NxrRxiX/zg2VbUmtTZGenhplY43u5rw==}
+  '@prisma/fetch-engine@5.16.0-integration-vitest-workaround.2':
+    resolution: {integrity: sha512-3J1sdE5ZjTsyS9YhNTKi88ntys99FHBPFOl5E7I7OtNeAH+opqZ92X8/Oje0ECJ/TH1jTzVgUEr6oVdWYL1AgQ==}
 
-  '@prisma/get-platform@5.16.0-integration-vitest-workaround.1':
-    resolution: {integrity: sha512-+1KCiGt4G4RxOg1e96wvo2wg2meUz0cVVZzczQOxc+IxvsuLtai6XfjJjzDMS2ruOEnMPuSz4Ev3Jf9BwHkr+A==}
+  '@prisma/get-platform@5.16.0-integration-vitest-workaround.2':
+    resolution: {integrity: sha512-wlw+MU59EPaOICcuMAFZS63YBiCS/sKCrKVrs+VxfmxzEfPA6IDIZVoY7xqQFg1syIRkwTqH1W9l1WFUEjIkPQ==}
 
   '@rollup/rollup-android-arm-eabi@4.18.0':
     resolution: {integrity: sha512-Tya6xypR10giZV1XzxmH5wr25VcZSncG0pZIjfePT0OVBvqNEurzValetGNarVrGiq66EBVAFn15iYX4w6FKgQ==}
@@ -861,8 +861,8 @@ packages:
       ts-node:
         optional: true
 
-  prisma@5.16.0-integration-vitest-workaround.1:
-    resolution: {integrity: sha512-RRTqWKD+ZqMcEq9UCB/jiNy2yyJFa1f/7BWeAwsyi5FTF/ml1qEmSYsA/LERkElHkQ3dJKRaIuxxD0OI1L7Pgw==}
+  prisma@5.16.0-integration-vitest-workaround.2:
+    resolution: {integrity: sha512-IwIhAQ+7UudErky0W0kKZQItVIqtp6NOg1i1lv31B7sJOxXCuKmrbzjZDST1O2+cgX1YAn7iz/8f/QXoyg5lKg==}
     engines: {node: '>=16.13'}
     hasBin: true
 
@@ -1263,30 +1263,30 @@ snapshots:
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
-  '@prisma/client@5.16.0-integration-vitest-workaround.1(prisma@5.16.0-integration-vitest-workaround.1)':
+  '@prisma/client@5.16.0-integration-vitest-workaround.2(prisma@5.16.0-integration-vitest-workaround.2)':
     optionalDependencies:
-      prisma: 5.16.0-integration-vitest-workaround.1
+      prisma: 5.16.0-integration-vitest-workaround.2
 
-  '@prisma/debug@5.16.0-integration-vitest-workaround.1': {}
+  '@prisma/debug@5.16.0-integration-vitest-workaround.2': {}
 
-  '@prisma/engines-version@5.16.0-10.e974ca8eb70e4bad2b8a038ff3eaa4109ba7fd58': {}
+  '@prisma/engines-version@5.16.0-23.d56fe2ee624826f693e591a3035694073d17f473': {}
 
-  '@prisma/engines@5.16.0-integration-vitest-workaround.1':
+  '@prisma/engines@5.16.0-integration-vitest-workaround.2':
     dependencies:
-      '@prisma/debug': 5.16.0-integration-vitest-workaround.1
-      '@prisma/engines-version': 5.16.0-10.e974ca8eb70e4bad2b8a038ff3eaa4109ba7fd58
-      '@prisma/fetch-engine': 5.16.0-integration-vitest-workaround.1
-      '@prisma/get-platform': 5.16.0-integration-vitest-workaround.1
+      '@prisma/debug': 5.16.0-integration-vitest-workaround.2
+      '@prisma/engines-version': 5.16.0-23.d56fe2ee624826f693e591a3035694073d17f473
+      '@prisma/fetch-engine': 5.16.0-integration-vitest-workaround.2
+      '@prisma/get-platform': 5.16.0-integration-vitest-workaround.2
 
-  '@prisma/fetch-engine@5.16.0-integration-vitest-workaround.1':
+  '@prisma/fetch-engine@5.16.0-integration-vitest-workaround.2':
     dependencies:
-      '@prisma/debug': 5.16.0-integration-vitest-workaround.1
-      '@prisma/engines-version': 5.16.0-10.e974ca8eb70e4bad2b8a038ff3eaa4109ba7fd58
-      '@prisma/get-platform': 5.16.0-integration-vitest-workaround.1
+      '@prisma/debug': 5.16.0-integration-vitest-workaround.2
+      '@prisma/engines-version': 5.16.0-23.d56fe2ee624826f693e591a3035694073d17f473
+      '@prisma/get-platform': 5.16.0-integration-vitest-workaround.2
 
-  '@prisma/get-platform@5.16.0-integration-vitest-workaround.1':
+  '@prisma/get-platform@5.16.0-integration-vitest-workaround.2':
     dependencies:
-      '@prisma/debug': 5.16.0-integration-vitest-workaround.1
+      '@prisma/debug': 5.16.0-integration-vitest-workaround.2
 
   '@rollup/rollup-android-arm-eabi@4.18.0':
     optional: true
@@ -1800,9 +1800,9 @@ snapshots:
       lilconfig: 3.1.2
       yaml: 2.4.5
 
-  prisma@5.16.0-integration-vitest-workaround.1:
+  prisma@5.16.0-integration-vitest-workaround.2:
     dependencies:
-      '@prisma/engines': 5.16.0-integration-vitest-workaround.1
+      '@prisma/engines': 5.16.0-integration-vitest-workaround.2
 
   process-warning@3.0.0: {}
 
