@@ -41,10 +41,10 @@ importers:
         version: 5.16.0
       tsup:
         specifier: ^8.1.0
-        version: 8.1.0(typescript@5.6.0-dev.20240626)
+        version: 8.1.0(typescript@5.6.0-dev.20240627)
       typescript:
-        specifier: 5.6.0-dev.20240626
-        version: 5.6.0-dev.20240626
+        specifier: 5.6.0-dev.20240627
+        version: 5.6.0-dev.20240627
       zod:
         specifier: 3.24.0-canary.20240523T174819
         version: 3.24.0-canary.20240523T174819
@@ -1052,8 +1052,8 @@ packages:
       typescript:
         optional: true
 
-  typescript@5.6.0-dev.20240626:
-    resolution: {integrity: sha512-OUmoaUrtJEMGnxr8luc4sBdJFMFl1rZHdG0h7lOT1J62RBkYiD/LfQJKaH7GcywgMA+oaONUb75kIHi3s8czkg==}
+  typescript@5.6.0-dev.20240627:
+    resolution: {integrity: sha512-fP6zd/pZ8baYlr3jR1sdhUxcuRrbL4kAEpGD4sx9Gr/eBvxKbs5mQqWTKICgxwbtKOXJ4KdrEoJkbx8+3PaZpg==}
     engines: {node: '>=14.17'}
     hasBin: true
 
@@ -1967,7 +1967,7 @@ snapshots:
 
   ts-interface-checker@0.1.13: {}
 
-  tsup@8.1.0(typescript@5.6.0-dev.20240626):
+  tsup@8.1.0(typescript@5.6.0-dev.20240627):
     dependencies:
       bundle-require: 4.2.1(esbuild@0.21.5)
       cac: 6.7.14
@@ -1984,12 +1984,12 @@ snapshots:
       sucrase: 3.35.0
       tree-kill: 1.2.2
     optionalDependencies:
-      typescript: 5.6.0-dev.20240626
+      typescript: 5.6.0-dev.20240627
     transitivePeerDependencies:
       - supports-color
       - ts-node
 
-  typescript@5.6.0-dev.20240626: {}
+  typescript@5.6.0-dev.20240627: {}
 
   undici-types@5.26.5: {}
 
