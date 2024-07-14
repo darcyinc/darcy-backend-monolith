@@ -1,0 +1,52 @@
+enum PostReplyPrivacy {
+  PUBLIC
+  ONLY_FOLLOWERS
+}
+
+model Post {
+  id String @id @default(cuid())
+
+  author   User   @relation("PostAuthor", fields: [authorId], references: [id])
+  authorId String
+
+  mediaUrls       String[]
+  content      String           @db.VarChar(1024)
+  replyPrivacy PostReplyPrivacy @default(PUBLIC)
+
+  likes      PostLike[]
+  likesCount Int        @default(0)
+
+  // If this field is not null, the post is a comment
+  replyingToId String?
+  replyingTo   Post?   @relation("PostReplies", fields: [replyingToId], references: [id])
+
+  replies      Post[] @relation("PostReplies")
+  repliesCount Int    @default(0)
+
+  repostingPostId         String?
+  repostingPost           Post?   @relation("PostReposts", fields: [repostingPostId], references: [id])
+  repostAdditionalComment String? @db.VarChar(1024)
+
+  reposts      Post[] @relation("PostReposts")
+  repostsCount Int    @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([authorId, repostingPostId])
+}
+
+model PostLike {
+  id String @id @default(cuid())
+
+  post   Post   @relation(fields: [postId], references: [id])
+  postId String
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([postId, userId])
+}

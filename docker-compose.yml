@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  db:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.postgresql
+    container_name: darcy-postgres
+    restart: unless-stopped
+    hostname: db
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: "darcy"
+      POSTGRES_PASSWORD: "darcy"
+      POSTGRES_DB: "darcy"
+    volumes:
+      - darcy-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d darcy -U darcy" ]
+      interval: 2s
+      timeout: 5s
+      retries: 5
+
+networks:
+  default:
+    name: darcy
+    driver: bridge
+
+volumes:
+  darcy-postgres-data:
+    name: darcy-postgres-data

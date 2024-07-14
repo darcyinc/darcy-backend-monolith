@@ -1,0 +1,58 @@
+enum ProfileDMPrivacy {
+  PUBLIC
+  ONLY_FOLLOWING
+  NOBODY
+}
+
+enum ProfilePrivacy {
+  PUBLIC
+  PRIVATE
+}
+
+model User {
+  id String @id @default(cuid())
+
+  auth     UserAuth?
+  sessions Session[]
+
+  // Profile
+  fullName  String
+  handle    String  @unique
+  bio       String? @db.VarChar(255)
+  avatarUrl String?
+  bannerUrl String?
+
+  privacy   ProfilePrivacy   @default(PUBLIC)
+  dmPrivacy ProfileDMPrivacy @default(PUBLIC)
+
+  followers  UserFollow[] @relation("Followers")
+  following  UserFollow[] @relation("Following")
+  posts      Post[]       @relation("PostAuthor")
+  likedPosts PostLike[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([handle])
+}
+
+enum UserFollowState {
+  COMPLETED
+  // If the user has requested to follow the other user (private profile)
+  PENDING
+}
+
+model UserFollow {
+  follower   User   @relation("Followers", fields: [followerId], references: [id])
+  followerId String
+
+  target   User   @relation("Following", fields: [targetId], references: [id])
+  targetId String
+
+  state UserFollowState @default(COMPLETED)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([followerId, targetId])
+}
