@@ -9,7 +9,7 @@ model Post {
   author   User   @relation("PostAuthor", fields: [authorId], references: [id])
   authorId String
 
-  mediaUrls       String[]
+  mediaUrls    String[]
   content      String           @db.VarChar(1024)
   replyPrivacy PostReplyPrivacy @default(PUBLIC)
 
