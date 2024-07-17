@@ -8,6 +8,9 @@ CREATE TYPE "ProfileDMPrivacy" AS ENUM ('PUBLIC', 'ONLY_FOLLOWING', 'NOBODY');
 CREATE TYPE "ProfilePrivacy" AS ENUM ('PUBLIC', 'PRIVATE');
 
 -- CreateEnum
+CREATE TYPE "ProfileVerificationState" AS ENUM ('NONE', 'VERIFIED');
+
+-- CreateEnum
 CREATE TYPE "UserFollowState" AS ENUM ('COMPLETED', 'PENDING');
 
 -- CreateTable
@@ -74,6 +77,12 @@ CREATE TABLE "User" (
     "bannerUrl" TEXT,
     "privacy" "ProfilePrivacy" NOT NULL DEFAULT 'PUBLIC',
     "dmPrivacy" "ProfileDMPrivacy" NOT NULL DEFAULT 'PUBLIC',
+    "verificationState" "ProfileVerificationState" NOT NULL DEFAULT 'NONE',
+    "followersCount" INTEGER NOT NULL DEFAULT 0,
+    "followingCount" INTEGER NOT NULL DEFAULT 0,
+    "postCount" INTEGER NOT NULL DEFAULT 0,
+    "commentsCount" INTEGER NOT NULL DEFAULT 0,
+    "likedPostsCount" INTEGER NOT NULL DEFAULT 0,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 

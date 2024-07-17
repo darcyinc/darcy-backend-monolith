@@ -9,6 +9,11 @@ enum ProfilePrivacy {
   PRIVATE
 }
 
+enum ProfileVerificationState {
+  NONE
+  VERIFIED
+}
+
 model User {
   id String @id @default(cuid())
 
@@ -22,13 +27,19 @@ model User {
   avatarUrl String?
   bannerUrl String?
 
-  privacy   ProfilePrivacy   @default(PUBLIC)
-  dmPrivacy ProfileDMPrivacy @default(PUBLIC)
+  privacy           ProfilePrivacy           @default(PUBLIC)
+  dmPrivacy         ProfileDMPrivacy         @default(PUBLIC)
+  verificationState ProfileVerificationState @default(NONE)
 
-  followers  UserFollow[] @relation("Followers")
-  following  UserFollow[] @relation("Following")
-  posts      Post[]       @relation("PostAuthor")
-  likedPosts PostLike[]
+  followers       UserFollow[] @relation("Followers")
+  followersCount  Int          @default(0)
+  following       UserFollow[] @relation("Following")
+  followingCount  Int          @default(0)
+  posts           Post[]       @relation("PostAuthor")
+  postCount       Int          @default(0)
+  commentsCount   Int          @default(0)
+  likedPosts      PostLike[]
+  likedPostsCount Int          @default(0)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
