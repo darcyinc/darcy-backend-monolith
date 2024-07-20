@@ -5,7 +5,7 @@ import { optionalAuthorization } from '@/middlewares/optional-authorization';
 import type { User } from '@prisma/client';
 import { object, string } from 'zod';
 
-export const allowedUserFields: [string, keyof User][] = [
+const allowedUserFields: [string, keyof User][] = [
   ['avatar_url', 'avatarUrl'],
   ['banner_url', 'bannerUrl'],
   ['bio', 'bio'],

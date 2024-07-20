@@ -25,7 +25,6 @@ model Post {
 
   repostingPostId         String?
   repostingPost           Post?   @relation("PostReposts", fields: [repostingPostId], references: [id])
-  repostAdditionalComment String? @db.VarChar(1024)
 
   reposts      Post[] @relation("PostReposts")
   repostsCount Int    @default(0)

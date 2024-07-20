@@ -13,7 +13,6 @@ export const allowedPostFields: [string, keyof Post][] = [
   ['replies_count', 'repliesCount'],
   ['reposts_count', 'repostsCount'],
   ['reposting_post_id', 'repostingPostId'],
-  ['repost_additional_comment', 'repostAdditionalComment'],
   ['reply_privacy', 'replyPrivacy'],
   ['replying_to_id', 'replyingToId'],
   ['created_at', 'createdAt'],
