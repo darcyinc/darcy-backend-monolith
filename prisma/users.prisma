@@ -54,10 +54,10 @@ enum UserFollowState {
 }
 
 model UserFollow {
-  follower   User   @relation("Followers", fields: [followerId], references: [id])
+  follower   User   @relation("Followers", fields: [followerId], references: [id], onDelete: Cascade)
   followerId String
 
-  target   User   @relation("Following", fields: [targetId], references: [id])
+  target   User   @relation("Following", fields: [targetId], references: [id], onDelete: Cascade)
   targetId String
 
   state UserFollowState @default(COMPLETED)

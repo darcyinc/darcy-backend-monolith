@@ -13,6 +13,9 @@ model Post {
   content      String           @db.VarChar(1024)
   replyPrivacy PostReplyPrivacy @default(PUBLIC)
 
+  // So replies won't be deleted
+  deleted Boolean @default(false)
+
   likes      PostLike[]
   likesCount Int        @default(0)
 
@@ -23,8 +26,8 @@ model Post {
   replies      Post[] @relation("PostReplies")
   repliesCount Int    @default(0)
 
-  repostingPostId         String?
-  repostingPost           Post?   @relation("PostReposts", fields: [repostingPostId], references: [id])
+  repostingPostId String?
+  repostingPost   Post?   @relation("PostReposts", fields: [repostingPostId], references: [id])
 
   reposts      Post[] @relation("PostReposts")
   repostsCount Int    @default(0)
@@ -38,10 +41,10 @@ model Post {
 model PostLike {
   id String @id @default(cuid())
 
-  post   Post   @relation(fields: [postId], references: [id])
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId String
 
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
   createdAt DateTime @default(now())
