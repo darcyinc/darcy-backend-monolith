@@ -24,7 +24,8 @@ export async function repostPost(app: AppInstance) {
 
       const post = await db.post.findUnique({
         where: {
-          id: request.params.postId
+          id: request.params.postId,
+          deleted: false
         }
       });
 

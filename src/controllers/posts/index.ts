@@ -1,2 +1,2 @@
 export * from './create-post';
-export * from './reposts';
+export * from './delete-post';
