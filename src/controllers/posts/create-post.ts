@@ -8,6 +8,7 @@ import type { Post } from '@prisma/client';
 export const allowedPostFields: [string, keyof Post][] = [
   ['id', 'id'],
   ['content', 'content'],
+  ['deleted', 'deleted'],
   ['media_urls', 'mediaUrls'],
   ['likes_count', 'likesCount'],
   ['replies_count', 'repliesCount'],
