@@ -27,7 +27,7 @@ model Post {
   repliesCount Int    @default(0)
 
   repostingPostId String?
-  repostingPost   Post?   @relation("PostReposts", fields: [repostingPostId], references: [id])
+  repostingPost   Post?   @relation("PostReposts", fields: [repostingPostId], references: [id], onDelete: Cascade)
 
   reposts      Post[] @relation("PostReposts")
   repostsCount Int    @default(0)
