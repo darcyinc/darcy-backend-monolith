@@ -101,7 +101,6 @@ export async function getPostComments(app: AppInstance) {
         if (comment.author.privacy === 'PRIVATE' && !is_following_comment_author) {
           return {
             id: comment.id,
-            content: null,
             comment_visible_to_user: false
           };
         }
@@ -117,6 +116,7 @@ export async function getPostComments(app: AppInstance) {
           has_liked,
           has_reposted,
           is_following_comment_author,
+          can_reply: post.replyPrivacy === 'PUBLIC' || (post.replyPrivacy === 'ONLY_FOLLOWERS' && is_following_comment_author),
           comment_visible_to_user: true
         };
       });

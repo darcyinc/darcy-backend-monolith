@@ -26,10 +26,14 @@ export async function repostPost(app: AppInstance) {
         where: {
           id: request.params.postId,
           deleted: false
+        },
+        include: {
+          author: true
         }
       });
 
       if (!post) return badRequest(reply, 'unknown_post', 'Unknown post.');
+      if (post.author.privacy === 'PRIVATE') return badRequest(reply, 'cannot_repost_private_post', 'Cannot repost private post.');
 
       const alreadyReposted = await db.post.findFirst({
         where: {

@@ -3,7 +3,7 @@ import { object, string } from 'zod';
 export const GetPostCommentsDto = object({
   limit: string({ message: 'Limit must be a string' })
     .optional()
-    .default('10')
+    .default('30')
     .refine((value) => !Number.isNaN(Number(value)), {
       message: 'Limit must be a numberic string'
     })

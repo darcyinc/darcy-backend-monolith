@@ -22,15 +22,33 @@ export async function addPostLike(app: AppInstance) {
         where: {
           id: request.params.postId,
           deleted: false
+        },
+        include: {
+          author: true
         }
       });
 
       if (!post) return badRequest(reply, 'unknown_post', 'Unknown post.');
 
-      const alreadyLiked = await db.postLike.findFirst({
+      if (post.author.privacy === 'PRIVATE') {
+        const isFollowing = await db.userFollow.findUnique({
+          where: {
+            followerId_targetId: {
+              followerId: request.authorization.user.id,
+              targetId: post.authorId
+            }
+          }
+        });
+
+        if (!isFollowing) return badRequest(reply, 'unknown_post', 'Unknown post.');
+      }
+
+      const alreadyLiked = await db.postLike.findUnique({
         where: {
-          userId: request.authorization.user.id,
-          postId: post.id
+          postId_userId: {
+            postId: post.id,
+            userId: request.authorization.user.id
+          }
         }
       });
 
