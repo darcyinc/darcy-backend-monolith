@@ -5,7 +5,9 @@ import type { AppInstance } from '@/index';
 import { optionalAuthorization } from '@/middlewares/optional-authorization';
 import type { Post, PostLike, UserFollow } from '@prisma/client';
 import { object, string } from 'zod';
-import { getAllowedPostFields } from './create-post';
+import { filterFields } from '@/utils/filter-fields';
+import { allowedPostAuthorFields } from './get-post';
+import { allowedPostFields } from './create-post';
 
 export async function getPostComments(app: AppInstance) {
   app.get(
@@ -96,9 +98,9 @@ export async function getPostComments(app: AppInstance) {
       const comments = rawComments.map((comment) => {
         const has_liked = !!likedComments.find((likedComment) => likedComment.postId === comment.id);
         const has_reposted = !!repostedComments.find((repostedComment) => repostedComment.id === comment.id);
-        const is_following_comment_author = !!followingCommentAuthors.find((reply) => reply.targetId === comment.authorId);
+        const is_following_post_owner = !!followingCommentAuthors.find((reply) => reply.targetId === comment.authorId);
 
-        if (comment.author.privacy === 'PRIVATE' && !is_following_comment_author) {
+        if (comment.author.privacy === 'PRIVATE' && !is_following_post_owner) {
           return {
             id: comment.id,
             comment_visible_to_user: false
@@ -106,17 +108,12 @@ export async function getPostComments(app: AppInstance) {
         }
 
         return {
-          ...getAllowedPostFields(comment),
-          author: {
-            fullName: comment.author.fullName,
-            handle: comment.author.handle,
-            avatar_url: comment.author.avatarUrl,
-            privacy: comment.author.privacy
-          },
+          ...filterFields(allowedPostFields, comment),
+          author: filterFields(allowedPostAuthorFields, comment.author),
           has_liked,
           has_reposted,
-          is_following_comment_author,
-          can_reply: post.replyPrivacy === 'PUBLIC' || (post.replyPrivacy === 'ONLY_FOLLOWERS' && is_following_comment_author),
+          is_following_comment_author: is_following_post_owner,
+          can_reply: post.replyPrivacy === 'PUBLIC' || (post.replyPrivacy === 'ONLY_FOLLOWERS' && is_following_post_owner),
           comment_visible_to_user: true
         };
       });

@@ -3,6 +3,7 @@ import { db } from '@/helpers/db';
 import { badRequest, forbidden, ok, unauthorized } from '@/helpers/response';
 import type { AppInstance } from '@/index';
 import { enforceAuthorization } from '@/middlewares/enforce-authorization';
+import { filterFields } from '@/utils/filter-fields';
 import type { Post } from '@prisma/client';
 
 export const allowedPostFields: [string, keyof Post][] = [
@@ -19,16 +20,6 @@ export const allowedPostFields: [string, keyof Post][] = [
   ['created_at', 'createdAt'],
   ['updated_at', 'updatedAt']
 ];
-
-export const getAllowedPostFields = (post: Post) => {
-  const data = {} as Record<string, unknown>;
-
-  for (const [key, value] of allowedPostFields) {
-    data[key] = post[value];
-  }
-
-  return data;
-};
 
 export async function createPost(app: AppInstance) {
   app.post(
@@ -80,7 +71,7 @@ export async function createPost(app: AppInstance) {
         }
       });
 
-      ok(reply, getAllowedPostFields(newPost));
+      ok(reply, filterFields(allowedPostFields, newPost));
     }
   );
 }

@@ -1,5 +1,5 @@
 import { db } from '@/helpers/db';
-import { badRequest, noContent, unauthorized } from '@/helpers/response';
+import { badRequest, forbidden, noContent, unauthorized } from '@/helpers/response';
 import type { AppInstance } from '@/index';
 import { enforceAuthorization } from '@/middlewares/enforce-authorization';
 import { object, string } from 'zod';
@@ -26,6 +26,8 @@ export async function deletePost(app: AppInstance) {
       });
 
       if (!post || post.deleted) return badRequest(reply, 'unknown_post', 'Unknown post.');
+
+      if (post.authorId !== request.authorization.user.id) return forbidden(reply);
 
       if (post.repliesCount === 0) {
         await db.post.delete({
