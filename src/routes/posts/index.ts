@@ -6,8 +6,9 @@ import type { AppInstance } from '@/index';
 export async function postsRouter(app: AppInstance) {
   app.register(PostsController.createPost);
   app.register(PostsController.deletePost);
-  app.register(PostsController.getPost);
   app.register(PostsController.getPostComments);
+  app.register(PostsController.getPost);
+  app.register(PostsController.getRecentPublicPosts);
 
   // Reposts
   app.register(PostRepostsController.deleteRepost);

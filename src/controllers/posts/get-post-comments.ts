@@ -112,7 +112,7 @@ export async function getPostComments(app: AppInstance) {
           author: filterFields(allowedPostAuthorFields, comment.author),
           has_liked,
           has_reposted,
-          is_following_comment_author: is_following_post_owner,
+          is_following_post_owner,
           can_reply: post.replyPrivacy === 'PUBLIC' || (post.replyPrivacy === 'ONLY_FOLLOWERS' && is_following_post_owner),
           comment_visible_to_user: true
         };
