@@ -21,7 +21,7 @@ export async function deleteRepost(app: AppInstance) {
       const post = await db.post.findUnique({
         where: {
           id: request.params.postId,
-          deleted: false,
+          deleted: false
         }
       });
 

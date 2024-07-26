@@ -1,6 +1,6 @@
 import * as PostsController from '@/controllers/posts';
-import * as PostRepostsController from '@/controllers/posts/reposts';
 import * as PostLikeController from '@/controllers/posts/like';
+import * as PostRepostsController from '@/controllers/posts/reposts';
 import type { AppInstance } from '@/index';
 
 export async function postsRouter(app: AppInstance) {

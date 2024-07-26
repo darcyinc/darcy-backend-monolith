@@ -3,11 +3,11 @@ import { db } from '@/helpers/db';
 import { notFound, ok } from '@/helpers/response';
 import type { AppInstance } from '@/index';
 import { optionalAuthorization } from '@/middlewares/optional-authorization';
+import { filterFields } from '@/utils/filter-fields';
 import type { Post, PostLike, UserFollow } from '@prisma/client';
 import { object, string } from 'zod';
-import { filterFields } from '@/utils/filter-fields';
-import { allowedPostAuthorFields } from './get-post';
 import { allowedPostFields } from './create-post';
+import { allowedPostAuthorFields } from './get-post';
 
 export async function getPostComments(app: AppInstance) {
   app.get(
