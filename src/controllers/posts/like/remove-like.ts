@@ -1,7 +1,9 @@
 import { db } from '@/helpers/db';
-import { badRequest, noContent, unauthorized } from '@/helpers/response';
+import { badRequest, noContent, notFound, unauthorized } from '@/helpers/response';
 import type { AppInstance } from '@/index';
 import { enforceAuthorization } from '@/middlewares/enforce-authorization';
+import { getPostById } from '@/services/posts/post';
+import { isFollowingUser } from '@/services/user';
 import { object, string } from 'zod';
 
 export async function removePostLike(app: AppInstance) {
@@ -18,29 +20,14 @@ export async function removePostLike(app: AppInstance) {
     async (request, reply) => {
       if (!request.authorization.authorized) return unauthorized(reply);
 
-      const post = await db.post.findUnique({
-        where: {
-          id: request.params.postId,
-          deleted: false
-        },
-        include: {
-          author: true
-        }
-      });
-
-      if (!post) return badRequest(reply, 'unknown_post', 'Unknown post.');
+      const post = await getPostById({ postId: request.params.postId, ignoreDeleted: true });
+      if (!post) return badRequest(reply, 'unknown_post', 'Unknown post');
 
       if (post.author.privacy === 'PRIVATE') {
-        const isFollowing = await db.userFollow.findUnique({
-          where: {
-            followerId_targetId: {
-              followerId: request.authorization.user.id,
-              targetId: post.authorId
-            }
-          }
-        });
+        if (!request.authorization.authorized) return notFound(reply, 'unknown_post', 'Unknown post');
 
-        if (!isFollowing) return badRequest(reply, 'unknown_post', 'Unknown post.');
+        const following = await isFollowingUser(request.authorization.user.id, post.authorId);
+        if (!following) return notFound(reply, 'unknown_post', 'Unknown post');
       }
 
       const alreadyLiked = await db.postLike.findUnique({

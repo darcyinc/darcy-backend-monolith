@@ -3,6 +3,7 @@ import { db } from '@/helpers/db';
 import { badRequest, noContent, unauthorized } from '@/helpers/response';
 import type { AppInstance } from '@/index';
 import { enforceAuthorization } from '@/middlewares/enforce-authorization';
+import { createPost, getPostById } from '@/services/posts/post';
 import { object, string } from 'zod';
 
 export async function repostPost(app: AppInstance) {
@@ -18,22 +19,15 @@ export async function repostPost(app: AppInstance) {
       onRequest: [enforceAuthorization] as never
     },
     async (request, reply) => {
-      if (!request.authorization.authorized) return unauthorized(reply);
-
+      const { postId } = request.params;
       const data = request.body;
 
-      const post = await db.post.findUnique({
-        where: {
-          id: request.params.postId,
-          deleted: false
-        },
-        include: {
-          author: true
-        }
-      });
+      if (!request.authorization.authorized) return unauthorized(reply);
 
-      if (!post) return badRequest(reply, 'unknown_post', 'Unknown post.');
-      if (post.author.privacy === 'PRIVATE') return badRequest(reply, 'cannot_repost_private_post', 'Cannot repost private post.');
+      const post = await getPostById({ postId, ignoreDeleted: true });
+      if (!post) return badRequest(reply, 'unknown_post', 'Unknown post');
+      if (post.author.privacy === 'PRIVATE')
+        return badRequest(reply, 'cannot_repost_private_post', 'Cannot repost a post from a private account');
 
       const alreadyReposted = await db.post.findFirst({
         where: {
@@ -42,9 +36,9 @@ export async function repostPost(app: AppInstance) {
         }
       });
 
-      if (alreadyReposted) return badRequest(reply, 'already_reposted', 'Already reposted.');
+      if (alreadyReposted) return badRequest(reply, 'already_reposted', 'Already reposted');
 
-      await db.$transaction([
+      await Promise.all([
         db.post.update({
           where: {
             id: post.id
@@ -55,13 +49,13 @@ export async function repostPost(app: AppInstance) {
             }
           }
         }),
-        db.post.create({
-          data: {
-            authorId: request.authorization.user.id,
-            repostingPostId: post.id,
-            content: data.content ?? '',
-            mediaUrls: data.mediaUrls
-          }
+        createPost({
+          authorId: request.authorization.user.id,
+          repostingPostId: post.id,
+          content: data.content ?? '',
+          mediaUrls: data.mediaUrls,
+          replyingToId: null,
+          replyPrivacy: 'PUBLIC'
         })
       ]);
 

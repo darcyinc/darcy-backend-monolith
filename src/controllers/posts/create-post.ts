@@ -1,8 +1,9 @@
 import { CreatePostDto } from '@/dtos/posts/create-post';
-import { db } from '@/helpers/db';
 import { badRequest, forbidden, ok, unauthorized } from '@/helpers/response';
 import type { AppInstance } from '@/index';
 import { enforceAuthorization } from '@/middlewares/enforce-authorization';
+import { createPost as createPostService, getPostById } from '@/services/posts/post';
+import { isFollowingUser } from '@/services/user';
 import { filterFields } from '@/utils/filter-fields';
 import type { Post } from '@prisma/client';
 
@@ -39,36 +40,23 @@ export async function createPost(app: AppInstance) {
         return badRequest(reply, 'provide_content_or_media', 'Missing content or media URLs. Please, provide content or media URLs.');
 
       if (data.replyingTo) {
-        const replyingTo = await db.post.findUnique({
-          where: {
-            id: data.replyingTo,
-            deleted: false
-          }
-        });
-
+        const replyingTo = await getPostById({ postId: data.replyingTo, ignoreDeleted: true });
         if (!replyingTo) return badRequest(reply, 'unknown_post_to_reply', 'Tried to reply to unknown post.');
 
         if (replyingTo.replyPrivacy === 'ONLY_FOLLOWERS') {
           // Check if original post author is following the user who is trying to reply
-          const isFollowing = await db.userFollow.findFirst({
-            where: {
-              followerId: replyingTo.authorId,
-              targetId: request.authorization.user.id
-            }
-          });
-
+          const isFollowing = await isFollowingUser(replyingTo.authorId, request.authorization.user.id);
           if (!isFollowing) return forbidden(reply, 'author_not_following_replier', 'Original post author is not following replier.');
         }
       }
 
-      const newPost = await db.post.create({
-        data: {
-          authorId: request.authorization.user.id,
-          content: data.content ?? '',
-          mediaUrls: data.mediaUrls,
-          replyingToId: data.replyingTo,
-          replyPrivacy: data.replyPrivacy
-        }
+      const newPost = await createPostService({
+        authorId: request.authorization.user.id,
+        content: data.content ?? '',
+        mediaUrls: data.mediaUrls,
+        replyPrivacy: data.replyPrivacy,
+        replyingToId: data.replyingTo ?? null,
+        repostingPostId: null
       });
 
       ok(reply, filterFields(allowedPostFields, newPost));

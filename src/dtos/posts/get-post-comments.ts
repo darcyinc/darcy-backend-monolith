@@ -20,5 +20,6 @@ export const GetPostCommentsDto = object({
     .refine((value) => Number(value) >= 1, {
       message: 'Page must be greater than 1'
     })
-    .transform((value) => Number(value))
+    .transform((value) => Number(value)),
+  afterId: string({ message: 'After ID must be a string' }).optional()
 });

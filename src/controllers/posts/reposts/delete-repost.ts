@@ -2,6 +2,7 @@ import { db } from '@/helpers/db';
 import { badRequest, noContent, unauthorized } from '@/helpers/response';
 import type { AppInstance } from '@/index';
 import { enforceAuthorization } from '@/middlewares/enforce-authorization';
+import { deletePost, getPostById } from '@/services/posts/post';
 import { object, string } from 'zod';
 
 export async function deleteRepost(app: AppInstance) {
@@ -16,16 +17,12 @@ export async function deleteRepost(app: AppInstance) {
       onRequest: [enforceAuthorization] as never
     },
     async (request, reply) => {
+      const { postId } = request.params;
+
       if (!request.authorization.authorized) return unauthorized(reply);
 
-      const post = await db.post.findUnique({
-        where: {
-          id: request.params.postId,
-          deleted: false
-        }
-      });
-
-      if (!post) return badRequest(reply, 'unknown_post', 'Unknown post.');
+      const post = await getPostById({ postId, ignoreDeleted: true });
+      if (!post) return badRequest(reply, 'unknown_post', 'Unknown post');
 
       const alreadyReposted = await db.post.findFirst({
         where: {
@@ -34,13 +31,9 @@ export async function deleteRepost(app: AppInstance) {
         }
       });
 
-      if (!alreadyReposted) return badRequest(reply, 'unknown_repost', 'Unknown repost.');
+      if (!alreadyReposted) return badRequest(reply, 'post_not_reposted', 'Post not reposted');
 
-      await db.post.delete({
-        where: {
-          id: alreadyReposted.id
-        }
-      });
+      await deletePost({ id: alreadyReposted.id, authorId: request.authorization.user.id });
 
       noContent(reply);
     }
