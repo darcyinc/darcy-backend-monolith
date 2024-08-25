@@ -15,8 +15,8 @@ importers:
         specifier: ^5.17.0
         version: 5.17.0(prisma@5.17.0)
       argon2:
-        specifier: ^0.40.3
-        version: 0.40.3
+        specifier: ^0.41.0
+        version: 0.41.0
       fastify:
         specifier: ^4.28.1
         version: 4.28.1
@@ -470,8 +470,8 @@ packages:
     resolution: {integrity: sha512-KMReFUr0B4t+D+OBkjR3KYqvocp2XaSzO55UcB6mgQMd3KbcE+mWTyvVV7D/zsdEbNnV6acZUutkiHQXvTr1Rw==}
     engines: {node: '>= 8'}
 
-  argon2@0.40.3:
-    resolution: {integrity: sha512-FrSmz4VeM91jwFvvjsQv9GYp6o/kARWoYKjbjDB2U5io1H3e5X67PYGclFDeQff6UXIhUd4aHR3mxCdBbMMuQw==}
+  argon2@0.41.0:
+    resolution: {integrity: sha512-3LEs/lMujSxvzMdKeF4pf41zPMVctpXLvAzrOcfi2clrULeNCNwaAIjMTKKnC8iU+g48+LnH2XbGwh1P/5pwHg==}
     engines: {node: '>=16.17.0'}
 
   array-union@2.1.0:
@@ -1427,7 +1427,7 @@ snapshots:
       normalize-path: 3.0.0
       picomatch: 2.3.1
 
-  argon2@0.40.3:
+  argon2@0.41.0:
     dependencies:
       '@phc/format': 1.0.0
       node-addon-api: 8.1.0
