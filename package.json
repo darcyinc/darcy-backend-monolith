@@ -19,8 +19,8 @@
   },
   "dependencies": {
     "@fastify/cors": "^9.0.1",
-    "@prisma/client": "^5.17.0",
-    "argon2": "^0.40.3",
+    "@prisma/client": "^5.19.0",
+    "argon2": "^0.41.1",
     "fastify": "^4.28.1",
     "fastify-type-provider-zod": "^2.0.0",
     "jsonwebtoken": "^9.0.2"
@@ -28,10 +28,10 @@
   "devDependencies": {
     "@biomejs/biome": "^1.8.3",
     "@types/jsonwebtoken": "^9.0.6",
-    "@types/node": "^22.0.2",
-    "husky": "^9.1.4",
-    "prisma": "^5.17.0",
-    "tsup": "^8.2.3",
+    "@types/node": "^22.5.1",
+    "husky": "^9.1.5",
+    "prisma": "^5.19.0",
+    "tsup": "^8.2.4",
     "typescript": "5.6.0-dev.20240801",
     "zod": "3.24.0-canary.20240523T174819"
   },
