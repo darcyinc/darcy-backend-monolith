@@ -22,7 +22,7 @@ importers:
         version: 4.28.1
       fastify-type-provider-zod:
         specifier: ^2.0.0
-        version: 2.0.0(fastify@4.28.1)(zod@3.24.0-canary.20240523T174819)
+        version: 2.0.0(fastify@4.28.1)(zod@3.24.0-canary.20241016T212913)
       jsonwebtoken:
         specifier: ^9.0.2
         version: 9.0.2
@@ -49,8 +49,8 @@ importers:
         specifier: 5.6.0-dev.20240801
         version: 5.6.0-dev.20240801
       zod:
-        specifier: 3.24.0-canary.20240523T174819
-        version: 3.24.0-canary.20240523T174819
+        specifier: 3.24.0-canary.20241016T212913
+        version: 3.24.0-canary.20241016T212913
 
 packages:
 
@@ -1130,8 +1130,8 @@ packages:
     peerDependencies:
       zod: ^3.23.3
 
-  zod@3.24.0-canary.20240523T174819:
-    resolution: {integrity: sha512-yRmms4cxDboI6CMHnY9DJRTPTAh5+RmYTpONAhZN3/0AK3AhJrkyjFFEMEyEK3Z+JWRBz3s728sw95Qnqegy2Q==}
+  zod@3.24.0-canary.20241016T212913:
+    resolution: {integrity: sha512-eBZuBpyW96V5w5xfk0MW0kz7Y2oIVAEb/83ythwnlGYrAI1L6rbTnOX9GqcqgKAEGPmMMWT+ThqEmsXtw+Et+w==}
 
 snapshots:
 
@@ -1597,11 +1597,11 @@ snapshots:
 
   fastify-plugin@4.5.1: {}
 
-  fastify-type-provider-zod@2.0.0(fastify@4.28.1)(zod@3.24.0-canary.20240523T174819):
+  fastify-type-provider-zod@2.0.0(fastify@4.28.1)(zod@3.24.0-canary.20241016T212913):
     dependencies:
       fastify: 4.28.1
-      zod: 3.24.0-canary.20240523T174819
-      zod-to-json-schema: 3.23.2(zod@3.24.0-canary.20240523T174819)
+      zod: 3.24.0-canary.20241016T212913
+      zod-to-json-schema: 3.23.2(zod@3.24.0-canary.20241016T212913)
 
   fastify@4.28.1:
     dependencies:
@@ -2089,8 +2089,8 @@ snapshots:
   yaml@2.5.0:
     optional: true
 
-  zod-to-json-schema@3.23.2(zod@3.24.0-canary.20240523T174819):
+  zod-to-json-schema@3.23.2(zod@3.24.0-canary.20241016T212913):
     dependencies:
-      zod: 3.24.0-canary.20240523T174819
+      zod: 3.24.0-canary.20241016T212913
 
-  zod@3.24.0-canary.20240523T174819: {}
+  zod@3.24.0-canary.20241016T212913: {}

@@ -33,7 +33,7 @@
     "prisma": "^5.19.0",
     "tsup": "^8.2.4",
     "typescript": "5.6.0-dev.20240801",
-    "zod": "3.24.0-canary.20240523T174819"
+    "zod": "3.24.0-canary.20241016T212913"
   },
   "packageManager": "pnpm@9.6.0"
 }
